@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block info%}
+<h1>Menü</h1>
+<p>hier kommen die buttons</p>
+{% endblock %}
+
+{% block input%}
+<h3>Kurzprüfung</h3>
+<button type="button" onClick="location.href='{{ url_for('kpname') }}'">Einsatz</button>
+<button type="button">Übung</button>
+<button type="button">Montl. Prüfung</button>
+{% endblock%}

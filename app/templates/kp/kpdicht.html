@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+<head>
+    <script src="timer.js"></script>
+</head>
+
+{% block info%}
+<h4>Dichteprüfung</h4>   
+<p>Nach dem die letzte Flasche wieder geschlossen wurde 
+        darf der Druck innerhalb einer Minute nur um 10bar sinken</p>
+{% endblock %}
+
+{% block input %}
+<p id="countdown">60 sec</p>
+<button id="start" type="button" onClick="funcountdown(61)">Zeit starten</button>
+<button id="restart" type="button" style="display: none;" onclick="funcrestart()">neustarten</button>
+<button id="weiter" type="button" style="display: none;" onClick="location.href='{{ url_for('kpwarn') }}'">erledigt</button>
+
+
+<script>
+    function funcountdown(zeit){
+        document.getElementById("start").style.display = "none";
+        document.getElementById("weiter").style.display = "none";
+        document.getElementById("restart").style.display = "inline";
+
+        var x = setInterval(function(){
+            zeit = zeit - 1;
+
+            document.getElementById("countdown").innerHTML = zeit + " sec";
+
+            if (zeit == 0){
+                clearInterval(x);
+                document.getElementById("weiter").style.display = "inline";
+                
+            }
+
+            document.getElementById("restart").addEventListener("click", function() {
+                clearInterval(x);
+                funcountdown(2);
+              });
+        }, 1000)
+    }
+    
+    
+</script>
+{% endblock%}
