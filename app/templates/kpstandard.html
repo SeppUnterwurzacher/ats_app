@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block input %}
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <div id="name">
+        <p>Bitte den Namen des Prüfers eingeben</p>
+        <p>(ein eindeutiger Kurzname ist ausreichend)</p>
+        <p>
+            {{ form.name(size=30) }}
+        </p>
+        <button type="button" onClick="document.getElementById('gurte').style.display='block'; document.getElementById('name').style.display='none'">erledigt</button>
+    </div>
+
+
+    <hr>
+    <div id="gurte" style="display: none;">
+        <h4>Bebänderung Maske und Gurte</h4>
+        <p>Ist beides auf lang gestellt? </p>
+
+        <button type="button" onClick="document.getElementById('druck').style.display='block'; document.getElementById('gurte').style.display='none'">erledigt</button>
+        <button type="button" onClick="document.getElementById('name').style.display='block'; document.getElementById('gurte').style.display='none'">zurück</button>
+    </div>
+
+    <hr>
+    <div id="druck" style="display: none;">
+        <h4>Überprüfen des Flaschendruckes</h4>
+        <p>Der Druck muss mindestens 180bar betragen.</p>
+    
+        
+        <p>Linke Flasche öffnen, kurz warten, schließen, Druck eingeben:</p>
+        <p>{{ form.druckl(size=30) }}</p>
+    
+        <p>Rechte Flasche öffnen, kurz warten, schließen, Druck eingeben:</p>
+        <p>{{ form.druckr(size=30) }}</p>
+
+        <button type="button" onClick="document.getElementById('dicht').style.display='block'; document.getElementById('druck').style.display='none'">erledigt</button>
+        <button type="button" onClick="document.getElementById('gurte').style.display='block'; document.getElementById('druck').style.display='none'">zurück</button>
+    </div>
+
+    <div id="dicht" style="display: none;">
+        <h4>Dichteprüfung</h4>   
+        <p>Nach dem die letzte Flasche wieder geschlossen wurde 
+            darf der Druck innerhalb einer Minute nur um 10bar sinken</p>
+
+        <p id="countdown">60 sec</p>
+        <button id="start" type="button" onClick="funcountdown(61)">Zeit starten</button>
+        <button id="restart" type="button" style="display: none;" onclick="funcrestart()">neustarten</button>
+        <button id="weiter" type="button" style="display: none;" onClick="document.getElementById('warn').style.display='block'; document.getElementById('dicht').style.display='none'">erledigt</button>
+    </div>
+
+    <div id="warn" style="display: none;">
+        <h4>Warnsignal</h4>
+        <p>Druck langsam ablassen, spätestens bei 55bar sollte das Warnsignal ertönen. </p>
+
+
+        <p>{{ form.submit() }}</p>
+    </div>
+</form>
+
+    <script>
+        function funcountdown(zeit){
+            document.getElementById("start").style.display = "none";
+            document.getElementById("weiter").style.display = "none";
+            document.getElementById("restart").style.display = "inline";
+
+            var x = setInterval(function(){
+                zeit = zeit - 1;
+
+                document.getElementById("countdown").innerHTML = zeit + " sec";
+
+                if (zeit == 0){
+                    clearInterval(x);
+                    document.getElementById("weiter").style.display = "inline";
+                    
+                }
+
+                document.getElementById("restart").addEventListener("click", function() {
+                    clearInterval(x);
+                    funcountdown(2);
+                });
+            }, 1000)
+        }
+        
+        
+    </script>
+{% endblock%}
