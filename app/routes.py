@@ -1,23 +1,25 @@
 from flask import render_template, url_for, redirect
 from app import app, db
 from app.forms import KPEinsatzUebung
-from app.models import Kurzpruefung
+from app.models import Geraete, Kurzpruefung
 
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template('index.html', title='Home')
 
-@app.route('/auswahl')
-def auswahl():
+@app.route('/auswahl/<geraet>')
+def auswahl(geraet):
     title = "Home"
-    return render_template('auswahl.html', title=title)
+    return render_template('auswahl.html', title=title, geraet=geraet)
 
-@app.route('/kpstand', methods=['GET', 'POST'])
-def kpstand():
+@app.route('/kpstand/<geraet>', methods=['GET', 'POST'])
+def kpstand(geraet):
     form = KPEinsatzUebung()
 
     if form.validate_on_submit():
+        id = Geraete.query.filter(Geraete.name_geraet==geraet).all()
+        id = id[0].id
         eintrag = Kurzpruefung(
             pruefer=form.name.data, 
             grund='Einsatz', 
@@ -25,16 +27,16 @@ def kpstand():
             druck2=form.druckr.data,
             dichtheit=True,
             warnsignal=True,
-            id_geraet=1)
+            id_geraet=id)
 
         db.session.add(eintrag)
         db.session.commit()
 
-        return redirect(url_for('test', name=name))   
+        return redirect(url_for('eingetragen'))   
 
-    return render_template('kpstandard.html', form=form)
+    return render_template('kpstandard.html', form=form, geraet=geraet)
 
 
 @app.route('/eingetragen')
-def test():
+def eingetragen():
     return '<h1>Eintrag erfolgt</h1>'

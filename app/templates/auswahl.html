@@ -7,7 +7,7 @@
 
 {% block input%}
 <h3>Kurzprüfung</h3>
-<button type="button" onClick="location.href='{{ url_for('kpstand') }}'">Einsatz</button>
+<button type="button" onClick="location.href='{{ url_for('kpstand', geraet=geraet) }}'">Einsatz</button>
 <button type="button">Übung</button>
 <button type="button">Montl. Prüfung</button>
 {% endblock%}
