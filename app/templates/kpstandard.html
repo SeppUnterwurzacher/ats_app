@@ -42,11 +42,14 @@
         <h4>Dichteprüfung</h4>   
         <p>Nach dem die letzte Flasche wieder geschlossen wurde 
             darf der Druck innerhalb einer Minute nur um 10bar sinken</p>
-
-        <p id="countdown">60 sec</p>
-        <button id="start" type="button" onClick="funcountdown(61)">Zeit starten</button>
-        <button id="restart" type="button" style="display: none;" onclick="funcrestart()">neustarten</button>
-        <button id="weiter" type="button" style="display: none;" onClick="document.getElementById('warn').style.display='block'; document.getElementById('dicht').style.display='none'">erledigt</button>
+        {% if kurz %}
+        <button id="weiter" type="button"  onClick="document.getElementById('warn').style.display='block'; document.getElementById('dicht').style.display='none'">erledigt</button>
+        {% else %}
+            <p id="countdown">60 sec</p>
+            <button id="start" type="button" onClick="funcountdown(61)">Zeit starten</button>
+            <button id="restart" type="button" style="display: none;" onclick="funcrestart()">neustarten</button>
+            <button id="weiter" type="button" style="display: none;" onClick="document.getElementById('warn').style.display='block'; document.getElementById('dicht').style.display='none'">erledigt</button>
+        {% endif%}
     </div>
 
     <div id="warn" style="display: none;">
