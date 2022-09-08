@@ -10,6 +10,7 @@
             {{ form.name(size=30) }}
         </p>
         <button type="button" onClick="document.getElementById('gurte').style.display='block'; document.getElementById('name').style.display='none'">erledigt</button>
+        <button type="button" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';">Abbrechen</button>
     </div>
 
 
@@ -20,6 +21,7 @@
 
         <button type="button" onClick="document.getElementById('druck').style.display='block'; document.getElementById('gurte').style.display='none'">erledigt</button>
         <button type="button" onClick="document.getElementById('name').style.display='block'; document.getElementById('gurte').style.display='none'">zurück</button>
+        <button type="button" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';">Abbrechen</button>
     </div>
 
     <hr>
@@ -36,6 +38,7 @@
 
         <button type="button" onClick="document.getElementById('dicht').style.display='block'; document.getElementById('druck').style.display='none'">erledigt</button>
         <button type="button" onClick="document.getElementById('gurte').style.display='block'; document.getElementById('druck').style.display='none'">zurück</button>
+        <button type="button" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';">Abbrechen</button>
     </div>
 
     <div id="dicht" style="display: none;">
@@ -49,6 +52,7 @@
             <button id="start" type="button" onClick="funcountdown(61)">Zeit starten</button>
             <button id="restart" type="button" style="display: none;" onclick="funcrestart()">neustarten</button>
             <button id="weiter" type="button" style="display: none;" onClick="document.getElementById('warn').style.display='block'; document.getElementById('dicht').style.display='none'">erledigt</button>
+            <button type="button" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';">Abbrechen</button>
         {% endif%}
     </div>
 
@@ -58,6 +62,7 @@
 
 
         <p>{{ form.submit() }}</p>
+        <button type="button" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';">Abbrechen</button>
     </div>
 </form>
 
