@@ -1,22 +1,17 @@
-<html>
-    <head>
-        {% if title %}
-        <title>{{ title }}</title>
-        {% else %}
-        <title>ATS-App</title> 
-        {% endif %}
-        
-        <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
-    </head>
+{% extends 'bootstrap/base.html' %}
 
-    <body>
+
+{% block title %}
+    {% if title %}{{ title }} - ATS-App{% else %}ATS-App{% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
         <div style="background-color: rgb(40, 192, 219);">
             <h3>{{ geraet }}</h3>
-            <h4>{{ feuerwehr }}</h4>
-            <h3>{{ pruefer }}</h3>
         </div>
         
         {% block input %}{% endblock %}
-        
-    </body>
-</html>
+    </div>
+{% endblock%}
+<!-- <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script> -->

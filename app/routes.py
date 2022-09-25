@@ -10,7 +10,7 @@ def index():
 
 @app.route('/auswahl/<geraet>')
 def auswahl(geraet):
-    title = "Home"
+    title = "Auswahl"
     return render_template('auswahl.html', title=title, geraet=geraet)
 
 @app.route('/kpstand/<geraet>/<grund>', methods=['GET', 'POST'])
