@@ -4,77 +4,153 @@
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <br>
-    <div id="name">
+    <div id="name_div">
         <div class="row">
-            <div class="col-xs-12">
-                <p>Bitte hier deinen Namen eingeben, <br>ein eindeutiger Kurzname ist ausreichend:</p>
+            <div class="col-xs-9" style="padding-right:0em;">
+                <h4>Name des Pürfers</h4>
+                <p>Bitte hier deinen Namen eingeben, <br>ein eindeutiger Kurzname ist ausreichend:</p>                
                 <p>
-                    {{ form.name(size=32) }}
+                    {{ form.name(size=33) }}
                 </p>
+                <p id="error_name" class="error">Es muss ein Name eingegeben werden</p>
             </div>
             
         </div>
-        <button type="button" class="btn btn-primary" onClick="document.getElementById('gurte').style.display='block'; document.getElementById('name').style.display='none'">erledigt</button>
-        <button type="button" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';">Abbrechen</button>
-    </div>
-
-
-    <hr>
-    <div id="gurte" style="display: none;">
-        <h4>Bebänderung Maske und Gurte</h4>
-        <p>Ist beides auf lang gestellt? </p>
-
-        <button type="button" onClick="document.getElementById('druck').style.display='block'; document.getElementById('gurte').style.display='none'">erledigt</button>
-        <button type="button" onClick="document.getElementById('name').style.display='block'; document.getElementById('gurte').style.display='none'">zurück</button>
-        <button type="button" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';">Abbrechen</button>
-    </div>
-
-    <hr>
-    <div id="druck" style="display: none;">
-        <h4>Überprüfen des Flaschendruckes</h4>
-        <p>Der Druck muss mindestens 180bar betragen.</p>
-    
+        <div class="row">
+            <div class="col-xs-7" style="padding-right: 0em;">
+                <button type="button" class="btn btn-success btn-block btn-lg" onClick="weiter_name()"><span class="fas fa-check-circle"></span></button>
+            </div>
+            <div class="col-xs-2">
+                <button type="button" class="btn btn-warning btn-lg" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
+            </div>
+        </div>
         
-        <p>Linke Flasche öffnen, kurz warten, schließen, Druck eingeben:</p>
-        <p>{{ form.druckl(size=30) }}</p>
-    
-        <p>Rechte Flasche öffnen, kurz warten, schließen, Druck eingeben:</p>
-        <p>{{ form.druckr(size=30) }}</p>
+        
+    </div>
 
-        <button type="button" onClick="document.getElementById('dicht').style.display='block'; document.getElementById('druck').style.display='none'">erledigt</button>
-        <button type="button" onClick="document.getElementById('gurte').style.display='block'; document.getElementById('druck').style.display='none'">zurück</button>
-        <button type="button" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';">Abbrechen</button>
+
+    
+    <div id="gurte" style="display: none;">
+        <div class="row">
+            <div class="col-xs-9">
+                <h4>Bebänderung Maske und Gurte</h4>
+                <p>Ist beides auf lang gestellt? </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6" style="padding-right: 0em;">
+                <button type="button" class="btn btn-success btn-block btn-lg" onClick="document.getElementById('druck').style.display='block'; document.getElementById('gurte').style.display='none'"><span class="fas fa-check-circle"></span></button>
+            </div>
+            <div class="col-xs-2">
+                <button type="button" class="btn btn-lg" onClick="document.getElementById('name_div').style.display='block'; document.getElementById('gurte').style.display='none'"><span class="fas fa-arrow-circle-left"></span></button>
+            </div>
+            <div class="col-xs-2">
+                <button type="button" class="btn btn-warning btn-lg" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="druck" style="display: none;">
+        <div class="row">
+            <div class="col-xs-10">
+                <h4>Überprüfen des Flaschendruckes</h4>
+                <p>Der Druck muss mindestens 180bar betragen.</p>
+            
+                <p>Linke Flasche öffnen, kurz warten, schließen, Druck eingeben:</p>
+                <p>{{ form.druckl(size=33) }}</p>
+                <p id="error_druckl" class="error">Druck nicht im zulässigen Bereich</p>
+            
+                <p>Rechte Flasche öffnen, kurz warten, schließen, Druck eingeben:</p>
+                <p>{{ form.druckr(size=33) }}</p>
+                <p id="error_druckr" class="error">Druck nicht im zulässigen Bereich</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6" style="padding-right: 0em;">
+                <button type="button" class="btn btn-success btn-block btn-lg" onClick="weiter_druck()"><span class="fas fa-check-circle"></span></button>
+            </div>
+            <div class="col-xs-2">
+                <button type="button" class="btn btn-lg" onClick="document.getElementById('gurte').style.display='block'; document.getElementById('druck').style.display='none'"><span class="fas fa-arrow-circle-left"></span></button>
+            </div>
+            <div class="col-xs-2">
+                <button type="button" class="btn btn-warning btn-lg" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
+            </div>
+        </div>
     </div>
 
     <div id="dicht" style="display: none;">
-        <h4>Dichteprüfung</h4>   
-        <p>Nach dem die letzte Flasche wieder geschlossen wurde 
-            darf der Druck innerhalb einer Minute nur um 10bar sinken</p>
+        <div class="row">
+            <div class="col-xs-10">
+                <h4>Dichteprüfung</h4>   
+                <p>
+                    Nach dem die letzte Flasche wieder geschlossen wurde 
+                    darf der Druck innerhalb einer Minute nur um 10bar sinken.
+                </p>
+            </div>
+        </div>
+        
         {% if kurz %}
-        <button id="weiter" type="button"  onClick="document.getElementById('warn').style.display='block'; document.getElementById('dicht').style.display='none'">erledigt</button>
+            <div class="row">
+                <div class="col-xs-6" style="padding-right: 0em;">
+                    <button id="weiter" type="button" class="btn btn-success btn-block btn-lg" onClick="document.getElementById('warn').style.display='block'; document.getElementById('dicht').style.display='none'"><span class="fas fa-check-circle"></span></button>
+                </div>
+            </div>  
         {% else %}
-            <p id="countdown">60 sec</p>
-            <button id="start" type="button" onClick="funcountdown(61)">Zeit starten</button>
-            <button id="restart" type="button" style="display: none;" onclick="funcrestart()">neustarten</button>
-            <button id="weiter" type="button" style="display: none;" onClick="document.getElementById('warn').style.display='block'; document.getElementById('dicht').style.display='none'">erledigt</button>
-            <button type="button" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';">Abbrechen</button>
+            <div class="row">
+                <div class="col-xs-10">
+                    <p id="countdown">60 sec</p>
+                </div>
+            </div>
+
+            <div class="row" style="padding-right: 0em;">
+                <div class="col-xs-6" >
+                    <button id="start" type="button" class="btn btn-block btn-lg" onClick="funcountdown(61)">Zeit starten</button>
+                    <button id="restart" type="button" class="btn btn-block btn-lg" style="display: none;" onclick="funcrestart()">neustarten</button> 
+                </div>
+            </div>
+            <br>
+            <div class="row" style="padding-right: 0em;">
+                <div class="col-xs-6">
+                    <button id="weiter" type="button" class="btn btn-success btn-block btn-lg" disabled="disabled" onClick="document.getElementById('warn').style.display='block'; document.getElementById('dicht').style.display='none'"><span class="fas fa-check-circle"></span></button>
+                </div>
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-lg" onClick="document.getElementById('druck').style.display='block'; document.getElementById('dicht').style.display='none'"><span class="fas fa-arrow-circle-left"></span></button>
+                </div>
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-warning btn-lg" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
+                </div>
+            </div>
+            
         {% endif%}
     </div>
 
     <div id="warn" style="display: none;">
-        <h4>Warnsignal</h4>
-        <p>Druck langsam ablassen, spätestens bei 55bar sollte das Warnsignal ertönen. </p>
+        <div class="row">
+            <div class="col-xs-10">
+                <h4>Warnsignal</h4>
+                <p>Druck langsam ablassen, spätestens bei 55bar sollte das Warnsignal ertönen.</p>
+            </div>
+        </div>
 
-
-        <p>{{ form.submit() }}</p>
-        <button type="button" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';">Abbrechen</button>
+        <div class="row" style="padding-right: 0em;">
+            <div class="col-xs-6">
+                <p>{{ form.submit() }}</p>
+            </div>
+            <div class="col-xs-2">
+                <button type="button" class="btn btn-lg" onClick="document.getElementById('dicht').style.display='block'; document.getElementById('warn').style.display='none'"><span class="fas fa-arrow-circle-left"></span></button>
+            </div>
+            <div class="col-xs-2">
+                <button type="button" class="btn btn-warning btn-lg" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
+            </div>
+        </div>  
     </div>
 </form>
 
     <script>
         function funcountdown(zeit){
             document.getElementById("start").style.display = "none";
-            document.getElementById("weiter").style.display = "none";
             document.getElementById("restart").style.display = "inline";
 
             var x = setInterval(function(){
@@ -84,7 +160,7 @@
 
                 if (zeit == 0){
                     clearInterval(x);
-                    document.getElementById("weiter").style.display = "inline";
+                    document.getElementById("weiter").disabled = false;
                     
                 }
 
@@ -95,6 +171,36 @@
             }, 1000)
         }
         
+        function weiter_name(){
+            var name = document.getElementById('name').value
+
+            if (name == ""){
+                document.getElementById('error_name').style.display='block';
+            } else {
+                document.getElementById('gurte').style.display='block'; 
+                document.getElementById('name_div').style.display='none';
+            }
+            
+        }
+
+        function weiter_druck(){
+            var druckl = document.getElementById('druckl').value
+            var druckr = document.getElementById('druckr').value
+
+            document.getElementById('error_druckl').style.display='none';
+            document.getElementById('error_druckr').style.display='none';
+
+            if (druckl < 180 || druckl > 220 || druckl == ""){
+                document.getElementById('error_druckl').style.display='block';
+            } else if (druckr < 180 || druckr > 220 || druckr == ""){
+                document.getElementById('error_druckr').style.display='block';
+            } else {
+                document.getElementById('dicht').style.display='block'; 
+                document.getElementById('druck').style.display='none';
+            }
+
+            
+        }
         
     </script>
 {% endblock%}
