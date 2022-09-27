@@ -1,5 +1,9 @@
 {% extends 'bootstrap/base.html' %}
 
+{% block styles %}
+{{super()}}    
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock%}
 
 {% block title %}
     {% if title %}{{ title }} - ATS-App{% else %}ATS-App{% endif %}
@@ -7,8 +11,14 @@
 
 {% block content %}
     <div class="container-fluid">
-        <div style="background-color: rgb(40, 192, 219);">
-            <h3>{{ geraet }}</h3>
+        <div class="row bg-primary">
+            <div class="col-xs-10">
+                <p style="margin-bottom: 0px; margin-top:0.3em">Ausgewähltes Gerät</p>
+                <h3 style="margin-top: 0px;">{{ geraet }}</h3>
+            </div>
+            <div class="col-xs-2">
+                <img src="/static/img/wappen_feuerwehr.png" alt="Wappen Feuerwehr" style="height: 50px; padding-top: 0.3em">
+            </div>
         </div>
         
         {% block input %}{% endblock %}

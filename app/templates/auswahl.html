@@ -1,13 +1,23 @@
 {% extends "base.html" %}
 
 {% block info%}
-<h1>Menü</h1>
-<p>hier kommen die buttons</p>
+    <h1>Menü</h1>
+    <p>hier kommen die buttons</p>
 {% endblock %}
 
 {% block input%}
-<h3>Kurzprüfung</h3>
-<button type="button" onClick="location.href='{{ url_for('kpstand', geraet=geraet, grund='Einsatz') }}'">Einsatz</button>
-<button type="button" onClick="location.href='{{ url_for('kpstand', geraet=geraet, grund='Uebung') }}'">Übung</button>
-<button type="button" onClick="location.href='{{ url_for('kpstand', geraet=geraet, grund='Tourlich') }}'">Montl. Prüfung</button>
+    <br>
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>Was ist der Grund für die Kurzprüfung?</h4>
+            <p>Nach der Auswahl des Anlasses, wirst du durch die einzelnen Schritte der Kurzprüfung geführt.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <button type="button" class="btn btn-primary btn-block" onClick="location.href='{{ url_for('kpstand', geraet=geraet, grund='Uebung') }}'">Übung</button>
+            <button type="button" class="btn btn-primary btn-block" onClick="location.href='{{ url_for('kpstand', geraet=geraet, grund='Einsatz') }}'">Einsatz</button>
+            <button type="button" class="btn btn-primary btn-block" onClick="location.href='{{ url_for('kpstand', geraet=geraet, grund='Tourlich') }}'">Montl. Prüfung</button>
+        </div>
+    </div>
 {% endblock%}

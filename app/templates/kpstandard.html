@@ -3,13 +3,18 @@
 {% block input %}
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
+    <br>
     <div id="name">
-        <p>Bitte den Namen des Prüfers eingeben</p>
-        <p>(ein eindeutiger Kurzname ist ausreichend)</p>
-        <p>
-            {{ form.name(size=30) }}
-        </p>
-        <button type="button" onClick="document.getElementById('gurte').style.display='block'; document.getElementById('name').style.display='none'">erledigt</button>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>Bitte hier deinen Namen eingeben, <br>ein eindeutiger Kurzname ist ausreichend:</p>
+                <p>
+                    {{ form.name(size=32) }}
+                </p>
+            </div>
+            
+        </div>
+        <button type="button" class="btn btn-primary" onClick="document.getElementById('gurte').style.display='block'; document.getElementById('name').style.display='none'">erledigt</button>
         <button type="button" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';">Abbrechen</button>
     </div>
 
