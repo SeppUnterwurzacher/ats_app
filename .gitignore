@@ -1,3 +1,6 @@
 .flaskenv
 venv/
 app/__pycache__/
+__pycache__/
+migrations/app/__pycache__/
+app/__pycache__/routes.cpython-37.pyc
