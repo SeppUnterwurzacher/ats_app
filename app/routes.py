@@ -37,11 +37,11 @@ def kpstand(geraet, grund):
         db.session.add(eintrag)
         db.session.commit()
 
-        return redirect(url_for('eingetragen'))   
+        return redirect(url_for('eingetragen', geraet=geraet))   
 
     return render_template('kpstandard.html', form=form, geraet=geraet, kurz=kurz)
 
 
-@app.route('/eingetragen')
-def eingetragen():
-    return '<h1>Eintrag erfolgt</h1>'
+@app.route('/eingetragen/<geraet>')
+def eingetragen(geraet):
+    return render_template('transmit.html', geraet=geraet)

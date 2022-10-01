@@ -8,16 +8,21 @@
 {% block input%}
     <br>
     <div class="row">
-        <div class="col-xs-12">
-            <h4>Was ist der Grund für die Kurzprüfung?</h4>
+        <div class="col-xs-10 col-xs-offset-1" style="padding-left: 0em;">
+            <h4>Kurzprüfung durchführen</h4>
             <p>Nach der Auswahl des Anlasses, wirst du durch die einzelnen Schritte der Kurzprüfung geführt.</p>
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-10 col-xs-offset-1" style="padding-left: 0em;">
             <button type="button" class="btn btn-primary btn-block" onClick="location.href='{{ url_for('kpstand', geraet=geraet, grund='Uebung') }}'">Übung</button>
             <button type="button" class="btn btn-primary btn-block" onClick="location.href='{{ url_for('kpstand', geraet=geraet, grund='Einsatz') }}'">Einsatz</button>
             <button type="button" class="btn btn-primary btn-block" onClick="location.href='{{ url_for('kpstand', geraet=geraet, grund='Tourlich') }}'">Montl. Prüfung</button>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 3.0em;" style="padding-left: 0em;">
+        <div class="col-xs-10 col-xs-offset-1">
+            <p>Falsches Gerät? Dann einfach erneut den richtigen QR-Code scanen.</p>
         </div>
     </div>
 {% endblock%}
