@@ -1,2 +1,0 @@
-FLASK_APP=atsapp.py
-FLASK_DEBUG=1
