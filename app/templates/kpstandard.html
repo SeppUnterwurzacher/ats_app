@@ -1,27 +1,28 @@
 {% extends "base.html" %}
 
 {% block input %}
-<form action="" method="post" novalidate>
+<form class="form-group" action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <br>
     <div id="name_div">
         <div class="row">
-            <div class="col-xs-9" style="padding-right:0em;">
-                <h4>Name des Pürfers</h4>
-                <p>Bitte hier deinen Namen eingeben, <br>ein eindeutiger Kurzname ist ausreichend:</p>                
+            <div class="col-xs-10 col-xs-offset-1" style="padding-right: 0em; padding-left: 0em">
+                <h4>Name des Prüfers</h4>
+                <p>Bitte hier deinen Namen eingeben, ein eindeutiger Kurzname ist ausreichend:</p>                
                 <p>
-                    {{ form.name(size=33) }}
+                    {{ form.name(class="form-control", placeholder="Name") }}
                 </p>
                 <p id="error_name" class="error">Es muss ein Name eingegeben werden</p>
             </div>
             
         </div>
         <div class="row">
-            <div class="col-xs-7" style="padding-right: 0em;">
+            <div class="col-xs-1"></div>
+            <div class="col-xs-8" style="padding-right: 0.2em; padding-left: 0em">
                 <button type="button" class="btn btn-success btn-block btn-lg" onClick="weiter_name()"><span class="fas fa-check-circle"></span></button>
             </div>
-            <div class="col-xs-2">
-                <button type="button" class="btn btn-warning btn-lg" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
+            <div class="col-xs-2" style="padding-left: 0.2em; padding-right: 0em;">
+                <button type="button" class="btn btn-warning btn-lg btn-block" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
             </div>
         </div>
         
@@ -32,20 +33,22 @@
     
     <div id="gurte" style="display: none;">
         <div class="row">
-            <div class="col-xs-9">
-                <h4>Bebänderung Maske und Gurte</h4>
-                <p>Ist beides auf lang gestellt? </p>
+            <div class="col-xs-10 col-xs-offset-1" style="padding-right: 0em; padding-left: 0em">
+                <h4>Bebänderung Maske und Gerät</h4>
+                <p>Ist beides auf lang gestellt und auch die Rettungsgurte wieder korrekt in den Taschen versorgt?</p>
+                <br>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-6" style="padding-right: 0em;">
+            <div class="col-xs-1"></div>
+            <div class="col-xs-6" style="padding-right: 0em; padding-left: 0em">
                 <button type="button" class="btn btn-success btn-block btn-lg" onClick="document.getElementById('druck').style.display='block'; document.getElementById('gurte').style.display='none'"><span class="fas fa-check-circle"></span></button>
             </div>
-            <div class="col-xs-2">
-                <button type="button" class="btn btn-lg" onClick="document.getElementById('name_div').style.display='block'; document.getElementById('gurte').style.display='none'"><span class="fas fa-arrow-circle-left"></span></button>
+            <div class="col-xs-2" style="padding-left: 0.2em; padding-right: 0.2em;">
+                <button type="button" class="btn btn-lg btn-block" onClick="document.getElementById('name_div').style.display='block'; document.getElementById('gurte').style.display='none'"><span class="fas fa-arrow-circle-left"></span></button>
             </div>
-            <div class="col-xs-2">
-                <button type="button" class="btn btn-warning btn-lg" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
+            <div class="col-xs-2" style="padding-left: 0em; padding-right: 0em;">
+                <button type="button" class="btn btn-warning btn-lg btn-block" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
             </div>
         </div>
     </div>
@@ -53,73 +56,78 @@
     
     <div id="druck" style="display: none;">
         <div class="row">
-            <div class="col-xs-10">
+            <div class="col-xs-10 col-xs-offset-1" style="padding-right: 0em; padding-left: 0em">
                 <h4>Überprüfen des Flaschendruckes</h4>
                 <p>Der Druck muss mindestens 180bar betragen.</p>
             
-                <p>Linke Flasche öffnen, kurz warten, schließen, Druck eingeben:</p>
-                <p>{{ form.druckl(size=33) }}</p>
+                <p>Linke Flasche öffnen, kurz warten, wieder schließen, Druck eingeben:</p>
+                <p>{{ form.druckl(class="form-control", placeholder="min 180 bar") }}</p>
                 <p id="error_druckl" class="error">Druck nicht im zulässigen Bereich</p>
             
-                <p>Rechte Flasche öffnen, kurz warten, schließen, Druck eingeben:</p>
-                <p>{{ form.druckr(size=33) }}</p>
+                <p>Rechte Flasche öffnen, kurz warten, wieder schließen, Druck eingeben:</p>
+                <p>{{ form.druckr(class="form-control", placeholder="min 180 bar") }}</p>
                 <p id="error_druckr" class="error">Druck nicht im zulässigen Bereich</p>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-xs-6" style="padding-right: 0em;">
+            <div class="col-xs-1"></div>
+            <div class="col-xs-6" style="padding-right: 0em; padding-left: 0em">
                 <button type="button" class="btn btn-success btn-block btn-lg" onClick="weiter_druck()"><span class="fas fa-check-circle"></span></button>
             </div>
-            <div class="col-xs-2">
-                <button type="button" class="btn btn-lg" onClick="document.getElementById('gurte').style.display='block'; document.getElementById('druck').style.display='none'"><span class="fas fa-arrow-circle-left"></span></button>
+            <div class="col-xs-2" style="padding-left: 0.2em; padding-right: 0.2em;">
+                <button type="button" class="btn btn-lg btn-block" onClick="document.getElementById('gurte').style.display='block'; document.getElementById('druck').style.display='none'"><span class="fas fa-arrow-circle-left"></span></button>
             </div>
-            <div class="col-xs-2">
-                <button type="button" class="btn btn-warning btn-lg" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
+            <div class="col-xs-2" style="padding-left: 0em; padding-right: 0em;">
+                <button type="button" class="btn btn-warning btn-lg btn-block" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
             </div>
         </div>
     </div>
 
     <div id="dicht" style="display: none;">
         <div class="row">
-            <div class="col-xs-10">
+            <div class="col-xs-10 col-xs-offset-1" style="padding-right: 0em; padding-left: 0em">
                 <h4>Dichteprüfung</h4>   
                 <p>
                     Nach dem die letzte Flasche wieder geschlossen wurde 
                     darf der Druck innerhalb einer Minute nur um 10bar sinken.
                 </p>
+                <br>
             </div>
         </div>
         
         {% if kurz %}
             <div class="row">
+                <div class="col-xs-1"></div>
                 <div class="col-xs-6" style="padding-right: 0em;">
                     <button id="weiter" type="button" class="btn btn-success btn-block btn-lg" onClick="document.getElementById('warn').style.display='block'; document.getElementById('dicht').style.display='none'"><span class="fas fa-check-circle"></span></button>
                 </div>
             </div>  
         {% else %}
-            <div class="row">
-                <div class="col-xs-10">
-                    <p id="countdown">60 sec</p>
+            <div class="row text-center">
+                <div class="col-xs-6 col-xs-offset-3" style="padding-right: 0em; padding-left: 0em">
+                    <h1 id="countdown">60</h1>
+                    <h4>Sekunden</h4>
                 </div>
             </div>
 
             <div class="row" style="padding-right: 0em;">
-                <div class="col-xs-6" >
+                <div class="col-xs-6 col-xs-offset-3" style="padding-right: 0em; padding-left: 0em" >
                     <button id="start" type="button" class="btn btn-block btn-lg" onClick="funcountdown(61)">Zeit starten</button>
                     <button id="restart" type="button" class="btn btn-block btn-lg" style="display: none;" onclick="funcrestart()">neustarten</button> 
                 </div>
             </div>
             <br>
-            <div class="row" style="padding-right: 0em;">
-                <div class="col-xs-6">
+            <div class="row">
+                <div class="col-xs-1"></div>
+                <div class="col-xs-6" style="padding-right: 0em; padding-left: 0em">
                     <button id="weiter" type="button" class="btn btn-success btn-block btn-lg" disabled="disabled" onClick="document.getElementById('warn').style.display='block'; document.getElementById('dicht').style.display='none'"><span class="fas fa-check-circle"></span></button>
                 </div>
-                <div class="col-xs-2">
-                    <button type="button" class="btn btn-lg" onClick="document.getElementById('druck').style.display='block'; document.getElementById('dicht').style.display='none'"><span class="fas fa-arrow-circle-left"></span></button>
+                <div class="col-xs-2" style="padding-right: 0.2em; padding-left: 0.2em">
+                    <button type="button" class="btn btn-lg btn-block" onClick="document.getElementById('druck').style.display='block'; document.getElementById('dicht').style.display='none'"><span class="fas fa-arrow-circle-left"></span></button>
                 </div>
-                <div class="col-xs-2">
-                    <button type="button" class="btn btn-warning btn-lg" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
+                <div class="col-xs-2" style="padding-right: 0em; padding-left: 0em">
+                    <button type="button" class="btn btn-warning btn-lg btn-block" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
                 </div>
             </div>
             
@@ -128,21 +136,23 @@
 
     <div id="warn" style="display: none;">
         <div class="row">
-            <div class="col-xs-10">
+            <div class="col-xs-10 col-xs-offset-1" style="padding-right: 0em; padding-left: 0em">
                 <h4>Warnsignal</h4>
                 <p>Druck langsam ablassen, spätestens bei 55bar sollte das Warnsignal ertönen.</p>
+                <br>
             </div>
         </div>
 
-        <div class="row" style="padding-right: 0em;">
-            <div class="col-xs-6">
+        <div class="row">
+            <div class="col-xs-1"></div>
+            <div class="col-xs-6" style="padding-right: 0em; padding-left: 0em">
                 <p>{{ form.submit() }}</p>
             </div>
-            <div class="col-xs-2">
-                <button type="button" class="btn btn-lg" onClick="document.getElementById('dicht').style.display='block'; document.getElementById('warn').style.display='none'"><span class="fas fa-arrow-circle-left"></span></button>
+            <div class="col-xs-2" style="padding-right: 0.2em; padding-left: 0.2em">
+                <button type="button" class="btn btn-lg btn-block" onClick="document.getElementById('dicht').style.display='block'; document.getElementById('warn').style.display='none'"><span class="fas fa-arrow-circle-left"></span></button>
             </div>
-            <div class="col-xs-2">
-                <button type="button" class="btn btn-warning btn-lg" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
+            <div class="col-xs-2" style="padding-right: 0em; padding-left: 0em">
+                <button type="button" class="btn btn-warning btn-lg btn-block" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
             </div>
         </div>  
     </div>
@@ -156,7 +166,7 @@
             var x = setInterval(function(){
                 zeit = zeit - 1;
 
-                document.getElementById("countdown").innerHTML = zeit + " sec";
+                document.getElementById("countdown").innerHTML = zeit;
 
                 if (zeit == 0){
                     clearInterval(x);
