@@ -1,0 +1,53 @@
+{% extends 'base_wart.html'%}
+
+{% block input%}
+    <div class="row">
+        <div class="col-xs-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Bezeichnung</th>
+                        <th>Typ</th>
+                        <th>Jahr</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for geraet in geraete %}
+                    <tr>
+                        <td>{{ geraet.id }}</td>
+                        <td>{{ geraet.name_geraet }}</td>
+                        <td>{{ geraet.typ_geraet }}</td>
+                        <td>{{ geraet.yyyy_geraet }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>           
+            </table>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <button type="button" class="btn btn-secondary" style="float: right; margin-left:0.2em;" onclick="getElementById('neu').style.display = 'inline'"><span class="fas fa-edit"></span></button>
+            <button type="button" class="btn btn-primary" style="float: right;" onclick="getElementById('neu').style.display = 'inline'"><span class="fas fa-plus"></span></button>
+        </div>  
+    </div>
+
+    <div id="neu" class="row" style="display: none;">
+        <div class="col-xs-12">
+        <form class="form-group" action="" method="post">
+            {{ form.hidden_tag() }}
+            <p>{{ form.bezeichnung.label() }}</p>
+            <p>{{ form.bezeichnung(class="form-control", placeholder="zB Feuerwehr_Fahrzeug_1") }}</p>
+            
+            <p>{{ form.typ.label() }}</p>
+            <p>{{ form.typ(class="form-control", placeholder="zB 200bar") }}</p>
+
+            <p>{{ form.anschaffung.label() }}</p>
+            <p>{{ form.anschaffung(class="form-control", placeholder="zB 2001") }}</p>
+
+            <p>{{ form.submit() }}</p>
+        </form>
+        </div>
+    </div>
+{% endblock%}

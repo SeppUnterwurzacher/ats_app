@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row bg-primary" style="padding-top: 0.3em; padding-bottom: 0.3em; margin-bottom:0.3em">
+            <div class="col-xs-9">
+                <h4 style="margin-bottom: 0px; margin-top:0.3em">Bereich ATS-Beauftrager</h4>
+            </div>
+            <div class="col-xs-2">
+                <img src="/static/img/wappen_feuerwehr.png" alt="Wappen Feuerwehr"  style="height: 50px;">
+            </div>
+        </div>
+        <div class="row">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="{{ url_for('wartgeraete') }}">Geräte</a></li>
+                <li><a href="#">Logbuch</a></li>
+            </ul>
+        </div>
+        
+        
+        {% block input %}{% endblock %}
+    </div>    
+{% endblock %}
+

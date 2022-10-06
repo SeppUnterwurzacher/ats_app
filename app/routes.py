@@ -1,6 +1,6 @@
 from flask import render_template, url_for, redirect
 from app import app, db
-from app.forms import KPEinsatzUebung
+from app.forms import KPEinsatzUebung, WartNeuGeraet
 from app.models import Geraete, Kurzpruefung
 
 @app.route('/')
@@ -45,3 +45,23 @@ def kpstand(geraet, grund):
 @app.route('/eingetragen/<geraet>')
 def eingetragen(geraet):
     return render_template('transmit.html', geraet=geraet)
+
+
+@app.route('/wartgeraete', methods=['GET', 'POST'])
+def wartgeraete():
+    geraete = Geraete.query.all()
+    form = WartNeuGeraet()
+
+    if form.validate_on_submit():
+        eintrag = Geraete(
+            name_geraet = form.bezeichnung.data,
+            typ_geraet = form.typ.data,
+            yyyy_geraet = form.anschaffung.data
+        )
+
+        db.session.add(eintrag)
+        db.session.commit()
+
+        return redirect(url_for('wartgeraete', geraete=geraete, form=form)) 
+
+    return render_template('/wart/atsgeraete.html', geraete=geraete, form=form)
