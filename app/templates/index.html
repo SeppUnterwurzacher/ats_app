@@ -1,2 +1,7 @@
+{% extends "base.html" %}
+
+{% block input %}
 <p>Ich weiß noch nicht genau zu was ich die Index.html brauche</p>
-<a href="{{ url_for('auswahl', geraet='Trins_Tank_1') }}">hier gehts zur ersten seite</a>
+<p><a href="{{ url_for('auswahl', geraet='Trins_Tank_1') }}">hier gehts zum ersten Gerät</a></p>
+<p><a href="{{ url_for('wartgeraete') }}">hier gehts zum ATS-Beauftragen Bereich</a></p>
+{% endblock%}
