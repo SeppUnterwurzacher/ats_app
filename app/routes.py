@@ -1,3 +1,5 @@
+from cmd import IDENTCHARS
+from distutils.util import execute
 from flask import render_template, url_for, redirect
 from app import app, db
 from app.forms import KPEinsatzUebung, WartNeuGeraet
@@ -65,3 +67,44 @@ def wartgeraete():
         return redirect(url_for('wartgeraete', geraete=geraete, form=form)) 
 
     return render_template('/wart/atsgeraete.html', geraete=geraete, form=form)
+
+@app.route('/geraetedetail/<id>', methods=['GET', 'POST'])
+def geraetedetail(id):
+    form = WartNeuGeraet()
+    geraet = Geraete.query.filter(Geraete.id==id).first()
+  
+
+    if form.validate_on_submit():
+        if id == '0':
+            eintrag = Geraete(
+                name_geraet = form.bezeichnung.data,
+                typ_geraet = form.typ.data,
+                yyyy_geraet = form.anschaffung.data
+            )
+
+            db.session.add(eintrag)
+            db.session.commit()
+        
+        else:
+            geraet.name_geraet = form.bezeichnung.data
+            geraet.typ_geraet = form.typ.data
+            geraet.yyyy_geraet = form.anschaffung.data
+
+            db.session.add(geraet)
+            db.session.commit()
+
+        return redirect(url_for('wartgeraete', geraete=geraet, form=form))
+
+    return render_template('/wart/geraetedetail.html', id=id, form=form, geraet=geraet)
+
+@app.route('/geraeteentfernen/<id>/<check>', methods=['GET', 'POST'])
+def geraeteentfernen(id, check):
+    geraet = Geraete.query.filter(Geraete.id==id).first()  
+    
+    if check=="1":
+        db.session.delete(geraet)
+        db.session.commit()
+        
+        return redirect(url_for('wartgeraete'))
+
+    return render_template('/wart/geraeteentfernen.html', id=id, geraet=geraet)

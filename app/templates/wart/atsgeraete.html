@@ -14,7 +14,7 @@
                 </thead>
                 <tbody>
                     {% for geraet in geraete %}
-                    <tr>
+                    <tr onclick="location.href='{{ url_for('geraetedetail', id=geraet.id) }}'">
                         <td>{{ geraet.id }}</td>
                         <td>{{ geraet.name_geraet }}</td>
                         <td>{{ geraet.typ_geraet }}</td>
@@ -28,8 +28,7 @@
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <button type="button" class="btn btn-secondary" style="float: right; margin-left:0.2em;" onclick="getElementById('neu').style.display = 'inline'"><span class="fas fa-edit"></span></button>
-            <button type="button" class="btn btn-primary" style="float: right;" onclick="getElementById('neu').style.display = 'inline'"><span class="fas fa-plus"></span></button>
+            <button type="button" class="btn btn-primary" style="float: right;" onclick="location.href='{{ url_for('geraetedetail', id='0') }}'"><span class="fas fa-plus"></span></button>
         </div>  
     </div>
 

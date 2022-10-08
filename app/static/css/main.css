@@ -8,7 +8,7 @@ input[type=submit] {
     background-color: #5cb85c; /* Grey background */
     border: 1px solid #4cae4c; /* Dark grey border */
     color: rgb(255, 255, 255); /* Black text color */
-    font-size: 1em; /* Size of text */
+    font-size: 1.2em; /* Size of text */
     padding: 10px 16px; /* Distance between text and border */
     border-radius: 6px;
     width: 100%;

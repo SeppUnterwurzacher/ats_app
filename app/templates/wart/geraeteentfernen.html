@@ -1,0 +1,26 @@
+{% extends 'base_wart.html'%}
+
+{% block input%}
+    <div class="row">
+        <div class="col-xs-10">
+            <h3>{{ geraet.name_geraet }}</h3>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-10">
+            <h4>Soll diese Gerät wirklich glöscht werden?</h4>
+    
+            <button type="button" 
+            class="btn btn-block btn-lg" 
+            onclick="location.href='{{ url_for('wartgeraete') }}'">Abbrechen</span></button>
+
+            <button type="button" 
+            class="btn btn-danger btn-block btn-lg" 
+            onclick="location.href='{{ url_for('geraeteentfernen', id=id, check=1) }}'">Löschen</span></button>
+            
+            <p style="margin-top: 0.6em;">Achtung dieser Vorgang kann nicht rückgänig gemacht werden</p>
+        </div>
+    </div>
+    
+{% endblock%}
