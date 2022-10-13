@@ -1,0 +1,55 @@
+{% extends 'base_wart.html'%}
+
+{% block input%}
+<div class="row">
+    <div class="col-xs-12">
+        <br>
+        <form id='auswahl' class="form-group" action="" method="post">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.geraet(class="form-control") }}
+            </p>
+            
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Datum</th>
+                    <th>Grund</th>
+                    <th>Druck</th>
+                    <th>HD-<br>Dicht</th>
+                    <th>Warn-<br>signal</th>
+                    <th>Pürfer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for eintrag in daten %}
+                <tr>
+                    <td>{{ eintrag.zeit }}</td>
+                    <td>{{ eintrag.grund }}</td>
+                    <td>{{ eintrag.druck1 }}/{{ eintrag.druck2 }}</td>
+                    <td>{{ eintrag.dichtheit }}</td>
+                    <td>{{ eintrag.warnsignal }}</td>
+                    <td>{{ eintrag.pruefer }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>           
+        </table>
+    </div>
+    
+</div>
+
+<script>
+    document.getElementById('tab_geraete').className = ""
+    document.getElementById('tab_logbuch').className = "active"
+
+    document.getElementById("geraet").addEventListener("change", function() {
+        document.getElementById("auswahl").submit();
+      });
+
+</script>
+{% endblock %}

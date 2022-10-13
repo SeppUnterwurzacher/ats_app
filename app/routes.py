@@ -1,8 +1,10 @@
 from cmd import IDENTCHARS
 from distutils.util import execute
+from random import choices
+from secrets import choice
 from flask import render_template, url_for, redirect
 from app import app, db
-from app.forms import KPEinsatzUebung, WartNeuGeraet
+from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl
 from app.models import Geraete, Kurzpruefung
 
 @app.route('/')
@@ -108,3 +110,20 @@ def geraeteentfernen(id, check):
         return redirect(url_for('wartgeraete'))
 
     return render_template('/wart/geraeteentfernen.html', id=id, geraet=geraet)
+
+@app.route('/logbuch/', methods=['GET', 'POST'])
+def logbuch():
+    id  = 1
+    daten = Kurzpruefung.query.filter(Kurzpruefung.id_geraet==id).all()
+
+    form = LogbuchAuswahl()
+    geraete = Geraete.query.all()
+    choices = [(i.id, i.name_geraet) for i in geraete]
+    form.geraet.choices = choices
+
+    if form.validate_on_submit():
+        id = form.geraet.data
+        daten = Kurzpruefung.query.filter(Kurzpruefung.id_geraet==id).all()
+        return render_template('/wart/logbuch.html', daten=daten, form=form)
+
+    return render_template('/wart/logbuch.html', daten=daten, form=form)

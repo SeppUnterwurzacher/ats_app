@@ -1,6 +1,6 @@
 from unicodedata import name
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField
+from wtforms import StringField, SubmitField, IntegerField, SelectField
 from wtforms.validators import DataRequired, NumberRange, Length
 
 
@@ -15,3 +15,7 @@ class WartNeuGeraet(FlaskForm):
     typ = StringField('Typ des Geräts:', validators=[DataRequired()])
     anschaffung = IntegerField('Jahr der Anschaffung:', validators=[DataRequired()])
     submit = SubmitField('Eintragen')
+
+class LogbuchAuswahl(FlaskForm):
+    geraet = SelectField('Gerät auswählen', choices=[(1, 'Gerät 1'), (2, 'Gerät 2')], validators=[DataRequired()])
+    submit = SubmitField('Laden')
