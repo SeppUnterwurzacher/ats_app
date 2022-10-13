@@ -6,6 +6,7 @@ from flask import render_template, url_for, redirect
 from app import app, db
 from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl
 from app.models import Geraete, Kurzpruefung
+from datetime import date
 
 @app.route('/')
 @app.route('/index')
@@ -114,7 +115,8 @@ def geraeteentfernen(id, check):
 @app.route('/logbuch/', methods=['GET', 'POST'])
 def logbuch():
     id  = 1
-    daten = Kurzpruefung.query.filter(Kurzpruefung.id_geraet==id).all()
+    year = date.today().year
+    daten = Kurzpruefung.query.filter(Kurzpruefung.id_geraet==id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all()
 
     form = LogbuchAuswahl()
     geraete = Geraete.query.all()
@@ -123,7 +125,8 @@ def logbuch():
 
     if form.validate_on_submit():
         id = form.geraet.data
-        daten = Kurzpruefung.query.filter(Kurzpruefung.id_geraet==id).all()
-        return render_template('/wart/logbuch.html', daten=daten, form=form)
+        year = form.year.data
+        daten = Kurzpruefung.query.filter(Kurzpruefung.id_geraet==id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all()
+        return render_template('/wart/logbuch.html', daten=daten, form=form, year=year)
 
-    return render_template('/wart/logbuch.html', daten=daten, form=form)
+    return render_template('/wart/logbuch.html', daten=daten, form=form, year=year)

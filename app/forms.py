@@ -1,7 +1,7 @@
-from unicodedata import name
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField, SelectField
-from wtforms.validators import DataRequired, NumberRange, Length
+from wtforms.validators import DataRequired, NumberRange
+from datetime import date
 
 
 class KPEinsatzUebung(FlaskForm):
@@ -13,9 +13,10 @@ class KPEinsatzUebung(FlaskForm):
 class WartNeuGeraet(FlaskForm):
     bezeichnung = StringField('Bezeichnung:', validators=[DataRequired()])
     typ = StringField('Typ des Geräts:', validators=[DataRequired()])
-    anschaffung = IntegerField('Jahr der Anschaffung:', validators=[DataRequired()])
+    anschaffung = IntegerField('Jahr der Anschaffung:', validators=[DataRequired(), NumberRange(min=1000, max=date.today().year)])
     submit = SubmitField('Eintragen')
 
 class LogbuchAuswahl(FlaskForm):
     geraet = SelectField('Gerät auswählen', choices=[(1, 'Gerät 1'), (2, 'Gerät 2')], validators=[DataRequired()])
+    year = IntegerField('Jahr', validators=[NumberRange(min=1000, max=date.today().year)])
     submit = SubmitField('Laden')
