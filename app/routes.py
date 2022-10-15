@@ -2,11 +2,13 @@ from cmd import IDENTCHARS
 from distutils.util import execute
 from random import choices
 from secrets import choice
-from flask import render_template, url_for, redirect
+from urllib import response
+from flask import render_template, url_for, redirect, make_response
 from app import app, db
 from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl
 from app.models import Geraete, Kurzpruefung
 from datetime import date
+import pdfkit
 
 @app.route('/')
 @app.route('/index')
@@ -130,3 +132,20 @@ def logbuch():
         return render_template('/wart/logbuch.html', daten=daten, form=form, year=year)
 
     return render_template('/wart/logbuch.html', daten=daten, form=form, year=year)
+
+
+@app.route('/pdflogbuch')
+def pfdlogbuch():
+    rendered = render_template('pdf/pdflogbuch.html')
+    
+    options = {
+        'orientation': 'Landscape'
+    }
+
+    pdf = pdfkit.from_string(rendered, False, options=options)
+
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Dispostiion'] = 'inline; filename=output.pdf'
+
+    return response
