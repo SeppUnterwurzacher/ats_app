@@ -142,10 +142,10 @@ def pfdlogbuch():
     geraete = Geraete.query.all()
 
     for i in geraete:
-        daten.append(Kurzpruefung.query.filter(Kurzpruefung.id_geraet==i.id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all())
-    
+        daten.append(Kurzpruefung.query.join(Geraete, Kurzpruefung.id_geraet==Geraete.id).add_columns(Geraete.name_geraet).filter(Kurzpruefung.id_geraet==i.id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all())
 
-    rendered = render_template('pdf/pdflogbuch.html', daten=daten[2])
+
+    rendered = render_template('pdf/pdflogbuch.html', daten=daten)
     
     options = {
         'orientation': 'Landscape'

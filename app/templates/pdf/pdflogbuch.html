@@ -12,7 +12,7 @@
         text-align: center;
     }
     </style>
-
+{% for geraet in daten %}
 <table style="border: 0px; width: 100%; margin-top: 50px;">
     <tr>
         <td colspan="3"><h3>Protokoll Kurzprüfungen</h3></td>
@@ -24,13 +24,13 @@
     </tr>
     <tr>
         <td><h4>FF Trins</h4></td>
-        <td><h4>Tank_Trins_1</h4></td>
+        <td><h4>{{ geraet[0].name_geraet }}</h4></td>
         <td><h4>2022</h4></td>
     </tr>
 </table>
 <hr style="border: 1px solid grey;">
 <br>
-<table class="main" style="width: 100%; page-break-after: always;">
+<table class="main" style="width: 100%;">
     <tr class="main" style="border: 2px solid black;">
         <th>Datum</th>
         <th>Grund</th>
@@ -41,17 +41,20 @@
         <th>Prüfer</th>
     </tr>
     <tr class="main">
-        {% for eintrag in daten %}
+        {% for eintrag in geraet %}
             <tr>
-                <td>{{ eintrag.zeit }}</td>
-                <td>{{ eintrag.grund }}</td>
-                <td>{{ eintrag.druck1 }}/{{ eintrag.druck2 }}</td>
-                <td>{% if eintrag.dichtheit %}ok{% else %}nein{% endif%}</td>
-                <td>{% if eintrag.warnsignal %}ok{% else %}nein{% endif%}</td>
-                <td>{% if eintrag.geraetetraeger %}{{ eintrag.geraetetraeger }}{% endif%}</td>
-                <td>{{ eintrag.pruefer }}</td>
+                <td>{{ eintrag[0].zeit }}</td>
+                <td>{{ eintrag[0].grund }}</td>
+                <td>{{ eintrag[0].druck1 }}/{{ eintrag[0].druck2 }}</td>
+                <td>{% if eintrag[0].dichtheit %}ok{% else %}nein{% endif%}</td>
+                <td>{% if eintrag[0].warnsignal %}ok{% else %}nein{% endif%}</td>
+                <td>{% if eintrag[0].geraetetraeger %}{{ eintrag[0].geraetetraeger }}{% endif%}</td>
+                <td>{{ eintrag[0].pruefer }}</td>
             </tr>
         {% endfor %}
     </tr>
 </table>
-<p>Test nächste Seite</p>
+{% if not loop.last %}
+<p style="page-break-after: always;"></p>
+{% endif%}
+{% endfor %}
