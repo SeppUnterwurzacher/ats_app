@@ -136,7 +136,16 @@ def logbuch():
 
 @app.route('/pdflogbuch')
 def pfdlogbuch():
-    rendered = render_template('pdf/pdflogbuch.html')
+    id  = 1
+    year = date.today().year
+    daten = []
+    geraete = Geraete.query.all()
+
+    for i in geraete:
+        daten.append(Kurzpruefung.query.filter(Kurzpruefung.id_geraet==i.id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all())
+    
+
+    rendered = render_template('pdf/pdflogbuch.html', daten=daten[2])
     
     options = {
         'orientation': 'Landscape'
