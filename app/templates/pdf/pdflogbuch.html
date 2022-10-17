@@ -1,2 +1,57 @@
-<p>Hallo</p>
-<h1>das ist ein test</h1>
+<meta charset="UTF-8" />
+
+<style>
+    .main {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
+    td {
+        text-align: center;
+    }
+    </style>
+
+<table style="border: 0px; width: 100%; margin-top: 50px;">
+    <tr>
+        <td colspan="3"><h3>Protokoll Kurzprüfungen</h3></td>
+    </tr>
+    <tr>
+        <td style="width: 20%;">Feuerwehr</td>
+        <td style="width: 60%;">Bezeichnung Gerät</td>
+        <td style="width: 20%;">Jahr</td>
+    </tr>
+    <tr>
+        <td><h4>FF Trins</h4></td>
+        <td><h4>Tank_Trins_1</h4></td>
+        <td><h4>2022</h4></td>
+    </tr>
+</table>
+<hr style="border: 1px solid grey;">
+<br>
+<table class="main" style="width: 100%; page-break-after: always;">
+    <tr class="main" style="border: 2px solid black;">
+        <th>Datum</th>
+        <th>Grund</th>
+        <th>Flaschendruck</th>
+        <th>HD-Dichtheit</th>
+        <th>Warnsignal</th>
+        <th>Geräteträger</th>
+        <th>Prüfer</th>
+    </tr>
+    <tr class="main">
+        {% for eintrag in daten %}
+            <tr>
+                <td>{{ eintrag.zeit }}</td>
+                <td>{{ eintrag.grund }}</td>
+                <td>{{ eintrag.druck1 }}/{{ eintrag.druck2 }}</td>
+                <td>{% if eintrag.dichtheit %}ok{% else %}nein{% endif%}</td>
+                <td>{% if eintrag.warnsignal %}ok{% else %}nein{% endif%}</td>
+                <td>{% if eintrag.geraetetraeger %}{{ eintrag.geraetetraeger }}{% endif%}</td>
+                <td>{{ eintrag.pruefer }}</td>
+            </tr>
+        {% endfor %}
+    </tr>
+</table>
+<p>Test nächste Seite</p>
