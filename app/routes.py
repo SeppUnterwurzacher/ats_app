@@ -134,27 +134,28 @@ def logbuch():
     return render_template('/wart/logbuch.html', daten=daten, form=form, year=year)
 
 
-@app.route('/pdflogbuch')
-def pfdlogbuch():
-    id  = 1
-    year = date.today().year
+@app.route('/pdflogbuch/<year>')
+def pdflogbuch(year):
+    #year = date.today().year
     daten = []
     geraete = Geraete.query.all()
 
     for i in geraete:
         daten.append(Kurzpruefung.query.join(Geraete, Kurzpruefung.id_geraet==Geraete.id).add_columns(Geraete.name_geraet).filter(Kurzpruefung.id_geraet==i.id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all())
 
+    if len(daten[0]) > 0:
+        rendered = render_template('pdf/pdflogbuch.html', daten=daten)
+        
+        options = {
+            'orientation': 'Landscape'
+        }
 
-    rendered = render_template('pdf/pdflogbuch.html', daten=daten)
-    
-    options = {
-        'orientation': 'Landscape'
-    }
+        pdf = pdfkit.from_string(rendered, False, options=options)
 
-    pdf = pdfkit.from_string(rendered, False, options=options)
+        response = make_response(pdf)
+        response.headers['Content-Type'] = 'application/pdf'
+        response.headers['Content-Dispostiion'] = 'inline; filename=output.pdf'
 
-    response = make_response(pdf)
-    response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Dispostiion'] = 'inline; filename=output.pdf'
-
-    return response
+        return response
+    else:
+        return "Keine Daten vorhanden"
