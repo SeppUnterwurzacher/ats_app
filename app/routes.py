@@ -29,6 +29,9 @@ def kpstand(geraet, grund):
     else:
         kurz = False
 
+    if grund == 'Uebung':
+        grund = 'Übung'
+
     if form.validate_on_submit():
         id = Geraete.query.filter(Geraete.name_geraet==geraet).all()
         id = id[0].id
