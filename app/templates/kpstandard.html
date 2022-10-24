@@ -22,11 +22,57 @@
                 <button type="button" class="btn btn-success btn-block btn-lg" onClick="weiter_name()"><span class="fas fa-check-circle"></span></button>
             </div>
             <div class="col-xs-2" style="padding-left: 0.2em; padding-right: 0em;">
-                <button type="button" class="btn btn-warning btn-lg btn-block" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
+                <button type="button" class="btn btn-warning btn-lg btn-block" onClick="window.location.href='{{ url_for('auswahl', geraet=geraet) }}';"><span class="fas fa-times-circle"></span></button>
             </div>
         </div>
-        
-        
+    </div>
+
+    <div id="traeger_div" style="display: none;">
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1" style="padding-right: 0em; padding-left: 0em">
+                <h4>Warst du selbst im Einsatz bzw. Übung?</h4>
+                <p>Prüfst du das Gerät für dich selbst?</p>              
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-1"></div>
+            <div class="col-xs-5" style="padding-right: 0.2em; padding-left: 0em">
+                <button type="button" 
+                        class="btn btn-success btn-block btn-lg" 
+                        onClick='weiter_traeger("ja")'>
+                        ja
+                </button>
+            </div>
+            <div class="col-xs-5" style="padding-left: 0.2em; padding-right: 0em;">
+                <button type="button" 
+                        class="btn btn-warning btn-lg btn-block" 
+                        onClick='weiter_traeger("nein")'>
+                        nein
+                </button>
+            </div>   
+        </div>
+    </div>
+
+    <div id="traeger_eingabe" style="display: none;">
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1" style="padding-right: 0em; padding-left: 0em">
+                <h4>Name des Trägers</h4>
+                <p>Bitte hier den Namen des Geräteträgers eingeben für den du das Gerät prüfst:</p>                
+                <p>
+                    {{ form.traeger(class="form-control", placeholder="Name") }}
+                </p>
+                <p id="error_traeger" class="error">Es muss ein Name eingegeben werden</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-1"></div>
+            <div class="col-xs-8" style="padding-right: 0.2em; padding-left: 0em">
+                <button type="button" class="btn btn-success btn-block btn-lg" onClick="weiter_traeger_eingabe()"><span class="fas fa-check-circle"></span></button>
+            </div>
+            <div class="col-xs-2" style="padding-left: 0.2em; padding-right: 0em;">
+                <button type="button" class="btn btn-warning btn-lg btn-block" onClick="window.location.href='{{ url_for('auswahl', geraet=geraet) }}';"><span class="fas fa-times-circle"></span></button>
+            </div>
+        </div>
     </div>
 
 
@@ -48,7 +94,7 @@
                 <button type="button" class="btn btn-lg btn-block" onClick="document.getElementById('name_div').style.display='block'; document.getElementById('gurte').style.display='none'"><span class="fas fa-arrow-circle-left"></span></button>
             </div>
             <div class="col-xs-2" style="padding-left: 0em; padding-right: 0em;">
-                <button type="button" class="btn btn-warning btn-lg btn-block" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
+                <button type="button" class="btn btn-warning btn-lg btn-block" onClick="window.location.href='{{ url_for('auswahl', geraet=geraet) }}';"><span class="fas fa-times-circle"></span></button>
             </div>
         </div>
     </div>
@@ -79,7 +125,7 @@
                 <button type="button" class="btn btn-lg btn-block" onClick="document.getElementById('gurte').style.display='block'; document.getElementById('druck').style.display='none'"><span class="fas fa-arrow-circle-left"></span></button>
             </div>
             <div class="col-xs-2" style="padding-left: 0em; padding-right: 0em;">
-                <button type="button" class="btn btn-warning btn-lg btn-block" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
+                <button type="button" class="btn btn-warning btn-lg btn-block" onClick="window.location.href='{{ url_for('auswahl', geraet=geraet) }}';"><span class="fas fa-times-circle"></span></button>
             </div>
         </div>
     </div>
@@ -96,7 +142,7 @@
             </div>
         </div>
         
-        {% if kurz %}
+        {% if kurz == "kurz" %}
             <div class="row">
                 <div class="col-xs-1"></div>
                 <div class="col-xs-6" style="padding-right: 0em;">
@@ -127,7 +173,7 @@
                     <button type="button" class="btn btn-lg btn-block" onClick="document.getElementById('druck').style.display='block'; document.getElementById('dicht').style.display='none'"><span class="fas fa-arrow-circle-left"></span></button>
                 </div>
                 <div class="col-xs-2" style="padding-right: 0em; padding-left: 0em">
-                    <button type="button" class="btn btn-warning btn-lg btn-block" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
+                    <button type="button" class="btn btn-warning btn-lg btn-block" onClick="window.location.href='{{ url_for('auswahl', geraet=geraet) }}';"><span class="fas fa-times-circle"></span></button>
                 </div>
             </div>
             
@@ -152,7 +198,7 @@
                 <button type="button" class="btn btn-lg btn-block" onClick="document.getElementById('dicht').style.display='block'; document.getElementById('warn').style.display='none'"><span class="fas fa-arrow-circle-left"></span></button>
             </div>
             <div class="col-xs-2" style="padding-right: 0em; padding-left: 0em">
-                <button type="button" class="btn btn-warning btn-lg btn-block" onClick="window.location.href='{{ url_for('auswahl', geraet='Trins_Tank_2') }}';"><span class="fas fa-times-circle"></span></button>
+                <button type="button" class="btn btn-warning btn-lg btn-block" onClick="window.location.href='{{ url_for('auswahl', geraet=geraet) }}';"><span class="fas fa-times-circle"></span></button>
             </div>
         </div>  
     </div>
@@ -182,16 +228,55 @@
         }
         
         function weiter_name(){
-            var name = document.getElementById('name').value
+            var name = document.getElementById('name').value;
+            {% if kurz == "kurz" %}
+                var kurz = "kurz";
+            {% else %}
+                var kurz = "normal"
+            {% endif %}
+            
 
             if (name == ""){
                 document.getElementById('error_name').style.display='block';
             } else {
-                document.getElementById('gurte').style.display='block'; 
-                document.getElementById('name_div').style.display='none';
+                if (kurz == "kurz"){
+                    document.getElementById('gurte').style.display='block'; 
+                    document.getElementById('name_div').style.display='none';
+                } else {
+                    document.getElementById('traeger_div').style.display='block'; 
+                    document.getElementById('name_div').style.display='none';
+                }
+                
             }
             
         }
+
+        function weiter_traeger(answer){            
+            if (answer == "nein"){
+                document.getElementById('traeger_eingabe').style.display='block'; 
+                document.getElementById('traeger_div').style.display='none';
+            } else {
+                document.getElementById('gurte').style.display='block'; 
+                document.getElementById('traeger_div').style.display='none';
+            }
+            
+        }
+
+        function weiter_traeger_eingabe(){
+            var traeger = document.getElementById('traeger').value
+
+            if (traeger == ""){
+                document.getElementById('error_traeger').style.display='block';
+            } else {
+                document.getElementById('gurte').style.display='block'; 
+                document.getElementById('traeger_eingabe').style.display='none';
+            }
+        }
+
+                
+    
+
+        
 
         function weiter_druck(){
             var druckl = document.getElementById('druckl').value

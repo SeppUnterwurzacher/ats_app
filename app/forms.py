@@ -6,6 +6,7 @@ from datetime import date
 
 class KPEinsatzUebung(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
+    traeger = StringField('Name')
     druckl = IntegerField('Druck Links', validators=[DataRequired(), NumberRange(min=180)])
     druckr = IntegerField('Druck Rechts', validators=[DataRequired(), NumberRange(min=180)])
     submit = SubmitField('Fertig!')

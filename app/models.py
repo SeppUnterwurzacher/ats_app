@@ -14,6 +14,7 @@ class Kurzpruefung(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     zeit = db.Column(db.Date, index=True, default=date.today)
     pruefer = db.Column(db.String(30), nullable=False)
+    geraetetraeger = db.Column(db.String(30))
     grund = db.Column(db.String(30))
     druck1 = db.Column(db.Integer)
     druck2 = db.Column(db.Integer)

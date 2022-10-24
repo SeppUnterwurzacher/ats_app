@@ -25,9 +25,9 @@ def kpstand(geraet, grund):
     form = KPEinsatzUebung()
 
     if grund == 'Tourlich':
-        kurz = True
+        kurz = "kurz"
     else:
-        kurz = False
+        kurz = "normal"
 
     if grund == 'Uebung':
         grund = 'Übung'
@@ -35,8 +35,17 @@ def kpstand(geraet, grund):
     if form.validate_on_submit():
         id = Geraete.query.filter(Geraete.name_geraet==geraet).all()
         id = id[0].id
+        
+        if grund == 'Tourlich':
+            traeger = ""
+        elif form.traeger.data == "":
+            traeger = form.name.data
+        else:
+            traeger = form.traeger.data
+
         eintrag = Kurzpruefung(
-            pruefer=form.name.data, 
+            pruefer=form.name.data,
+            geraetetraeger=traeger, 
             grund=grund, 
             druck1=form.druckl.data, 
             druck2=form.druckr.data,
@@ -144,7 +153,9 @@ def pdflogbuch(year):
     geraete = Geraete.query.all()
 
     for i in geraete:
-        daten.append(Kurzpruefung.query.join(Geraete, Kurzpruefung.id_geraet==Geraete.id).add_columns(Geraete.name_geraet).filter(Kurzpruefung.id_geraet==i.id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all())
+        i_daten = Kurzpruefung.query.join(Geraete, Kurzpruefung.id_geraet==Geraete.id).add_columns(Geraete.name_geraet).filter(Kurzpruefung.id_geraet==i.id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all()
+        if len(i_daten) > 0:
+            daten.append(i_daten)
 
     if len(daten[0]) > 0:
         rendered = render_template('pdf/pdflogbuch.html', daten=daten)
