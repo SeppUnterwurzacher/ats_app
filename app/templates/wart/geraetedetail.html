@@ -3,9 +3,9 @@
 {% block input%}
 <form class="form-group" action="" method="post">
     <div class="row">
-        <div class="col-xs-12" style="margin-top: 5px;">
+        <div class="col-md-6" style="margin-top: 5px;">
             <h4 id="abschnitts_titel">Geräte Details</h4>
-            <hr style="margin-top: 0em; height:2px;border-width:0;color:gray;background-color:rgb(190, 190, 190)">
+            <hr style="margin-bottom:10px; margin-top: 0em; height:2px;border-width:0;color:gray;background-color:rgb(190, 190, 190)">
         </div>
     </div>
 
@@ -28,9 +28,9 @@
     </div>
     
     <div class="row">
-
         {% if id == '0'%}
         <div class="col-md-6">
+            <hr style="margin-bottom:5px; margin-top:4px; height:2px;border-width:0;color:gray;background-color:rgb(190, 190, 190)">
             <ul class="list-inline" style="float: right;">
                 <li id="submit" class="list-inline-item">{{ form.submit() }}</li>
                 <li id="back" class="list-inline-item">
@@ -50,6 +50,7 @@
         </div>
         {% else %}
         <div class="col-md-6">
+            <hr style="margin-bottom:10px; margin-top:4px; height:2px;border-width:0;color:gray;background-color:rgb(190, 190, 190)">
             <ul class="list-inline" style="float: right;">
                 <li id="bearbeiten" class="list-inline-item">
                     <button type="button" 
