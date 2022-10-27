@@ -19,5 +19,5 @@ class WartNeuGeraet(FlaskForm):
 
 class LogbuchAuswahl(FlaskForm):
     geraet = SelectField('Gerät auswählen', choices=[(1, 'Gerät 1'), (2, 'Gerät 2')], validators=[DataRequired()])
-    year = IntegerField('Jahr', validators=[NumberRange(min=1000, max=date.today().year)])
+    year = SelectField('Jahr', validators=[DataRequired()])
     submit = SubmitField('Laden')

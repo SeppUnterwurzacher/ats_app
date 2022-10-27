@@ -134,8 +134,10 @@ def logbuch():
 
     form = LogbuchAuswahl()
     geraete = Geraete.query.all()
-    choices = [(i.id, i.name_geraet) for i in geraete]
-    form.geraet.choices = choices
+    choices_geraet = [(i.id, i.name_geraet) for i in geraete]
+    form.geraet.choices = choices_geraet
+    choices_jahr = [(year-i, year-i) for i in range(20)]
+    form.year.choices = choices_jahr
 
     if form.validate_on_submit():
         id = form.geraet.data

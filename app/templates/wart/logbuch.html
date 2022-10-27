@@ -1,28 +1,28 @@
 {% extends 'base_wart.html'%}
 
 {% block input%}
-<div class="row">
-    <div class="col-xs-11">
-        <br>
-        <form id='auswahl' class="form-group" action="" method="post">
-            {{ form.hidden_tag() }}
-            <p>
-                {{ form.geraet(class="form-control") }}
-            </p>
+<div class="row" style="margin-top: 8px;">
+    <form id='auswahl' class="form-group" action="" method="post">
+        {{ form.hidden_tag() }}
+        <div class="col-md-5">
+                <p>
+                    {{ form.geraet(class="form-control") }}
+                </p>
+        </div>
+        <div class="col-md-5">
             <p>
                 {{ form.year(class="form-control", value=year)}}
             </p>
-            
-        </form>
-    </div>
-    <div class="col-xs-1">
-        <br>
-        <button type="button" class="btn btn-primary btn-lg btn-block" style="float: right;" onclick="window.open('{{ url_for('pdflogbuch', year=year) }}')">
-            <span class="fas fa-download"></span>
-        </button>
-    </div>
+        </div>
+    
+        <div class="col-md-2">
+            <button type="button" class="btn btn-primary btn-block" style="float: right;" onclick="window.open('{{ url_for('pdflogbuch', year=year) }}')">
+                <span class="fas fa-download"></span>
+            </button>
+        </div>
+    </form>
 </div>
-<div class="row">
+<div class="row" style="margin-top: 8px;">
     <div class="col-xs-12">
         <table class="table table-hover">
             <thead>
@@ -30,8 +30,7 @@
                     <th>Datum</th>
                     <th>Grund</th>
                     <th>Druck</th>
-                    <th>HD-<br>Dicht</th>
-                    <th>Warn-<br>signal</th>
+                    <th>HD/<br>Warn</th>
                     <th>Geräte-<br>träger</th>
                     <th>Pürfer</th>
                 </tr>
@@ -42,8 +41,14 @@
                     <td>{{ eintrag.zeit }}</td>
                     <td>{{ eintrag.grund }}</td>
                     <td>{{ eintrag.druck1 }}/{{ eintrag.druck2 }}</td>
-                    <td>{% if eintrag.dichtheit %}ok{% else %}nein{% endif%}</td>
-                    <td>{% if eintrag.warnsignal %}ok{% else %}nein{% endif%}</td>
+
+                    <td>{% if eintrag.dichtheit %}
+                            {% if eintrag.warnsignal %}ok{% else %}nein{% endif%}
+                        {% else %}
+                            nein
+                        {% endif%}
+                    </td>
+
                     <td>{% if eintrag.geraetetraeger %}{{ eintrag.geraetetraeger }}{% endif%}</td>
                     <td>{{ eintrag.pruefer }}</td>
                 </tr>
@@ -51,7 +56,7 @@
             </tbody>           
         </table>
     </div>
-    
+
 </div>
 
 <script>
@@ -66,5 +71,6 @@
         document.getElementById("auswahl").submit();
       });
 
+      
 </script>
 {% endblock %}
