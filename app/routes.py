@@ -1,24 +1,43 @@
-from cmd import IDENTCHARS
-from distutils.util import execute
-from random import choices
-from secrets import choice
-from urllib import response
-from flask import render_template, url_for, redirect, make_response
+from curses import flash
+from flask import render_template, url_for, redirect, make_response, flash
 from app import app, db
-from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl
+from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl, GeraeteLogin
 from app.models import Geraete, Kurzpruefung
 from datetime import date
 import pdfkit
+from flask_login import current_user, login_user
 
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template('index.html', title='Home')
 
+@app.route('/geraete_login/<geraet>/', methods=['GET', 'POST'])
+def geraete_login(geraet):
+    form = GeraeteLogin()
+    if form.validate_on_submit():
+        geraet_selected = Geraete.query.filter_by(name_geraet=geraet).first()
+        if geraet_selected is None:
+            return 'Kein gültiges Gerät gewählt'
+
+        if geraet_selected.check_password(str(form.pin_geraet.data)):
+            login_user(geraet_selected)
+            return redirect(url_for('auswahl', geraet=geraet))
+        else:
+            flash('Faslcher Pin', 'error')
+            return redirect(url_for('geraete_login', geraet=geraet))
+
+    return render_template('geraete_login.html', geraet=geraet, form=form)
+
+
 @app.route('/auswahl/<geraet>')
 def auswahl(geraet):
     title = "Auswahl"
-    return render_template('auswahl.html', title=title, geraet=geraet)
+    if current_user.is_authenticated:
+        return render_template('auswahl.html', title=title, geraet=geraet)
+    
+    return ('Zugang nicht erlaubt')
+
 
 @app.route('/kpstand/<geraet>/<grund>', methods=['GET', 'POST'])
 def kpstand(geraet, grund):
@@ -57,8 +76,10 @@ def kpstand(geraet, grund):
         db.session.commit()
 
         return redirect(url_for('eingetragen', geraet=geraet))   
+    if current_user.is_authenticated:
+        return render_template('kpstandard.html', form=form, geraet=geraet, kurz=kurz)
 
-    return render_template('kpstandard.html', form=form, geraet=geraet, kurz=kurz)
+    return ('Zugang nicht erlaubt')
 
 
 @app.route('/eingetragen/<geraet>')

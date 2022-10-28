@@ -21,3 +21,6 @@ class LogbuchAuswahl(FlaskForm):
     geraet = SelectField('Gerät auswählen', choices=[(1, 'Gerät 1'), (2, 'Gerät 2')], validators=[DataRequired()])
     year = SelectField('Jahr', validators=[DataRequired()])
     submit = SubmitField('Laden')
+
+class GeraeteLogin(FlaskForm):
+    pin_geraet = IntegerField('Pin', validators=[DataRequired()])

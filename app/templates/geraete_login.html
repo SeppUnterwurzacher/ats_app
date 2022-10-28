@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block input %}
+<form class="form-group" action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <br>
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1" style="padding-right: 0em; padding-left: 0em">
+            <h4>Pin eingeben</h4>
+            <p>Den Pin findest du beim QR-Code</p>                
+            <p>
+                {{ form.pin_geraet(class="form-control", placeholder="1234") }}
+            </p>
+            
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <p style="color:red;">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+            
+        </div>  
+    </div>
+</form>
+{% endblock %}
