@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block input %}
-<form class="form-group" action="" method="post" novalidate>
+<form id="PIN" class="form-group" action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <br>
     <div class="row">
@@ -9,7 +9,7 @@
             <h4>Pin eingeben</h4>
             <p>Den Pin findest du beim QR-Code</p>                
             <p>
-                {{ form.pin_geraet(class="form-control", placeholder="1234") }}
+                {{ form.pin_geraet(class="form-control", placeholder="Pin hier eingeben") }}
             </p>
             
             {% with messages = get_flashed_messages() %}
@@ -23,4 +23,14 @@
         </div>  
     </div>
 </form>
+
+<script>
+    document.getElementById("pin_geraet").addEventListener("keyup", function() {
+        var zeichen = document.getElementById("pin_geraet").value
+        console.log(zeichen.length)
+        if (zeichen.length == 4){
+            document.getElementById("PIN").submit();
+        }
+    });
+</script>
 {% endblock %}
