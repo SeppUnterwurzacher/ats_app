@@ -24,7 +24,7 @@ def geraete_login(geraet):
             login_user(geraet_selected)
             return redirect(url_for('auswahl', geraet=geraet))
         else:
-            flash('Faslcher Pin', 'error')
+            flash('Pin stimmt nicht mit Gerät überein', 'error')
             return redirect(url_for('geraete_login', geraet=geraet))
 
     return render_template('geraete_login.html', geraet=geraet, form=form)

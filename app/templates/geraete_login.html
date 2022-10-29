@@ -9,7 +9,7 @@
             <h4>Pin eingeben</h4>
             <p>Den Pin findest du beim QR-Code</p>                
             <p>
-                {{ form.pin_geraet(class="form-control", placeholder="Pin hier eingeben") }}
+                {{ form.pin_geraet(class="form-control", placeholder="Pin hier eingeben", autofocus=true) }}
             </p>
             
             {% with messages = get_flashed_messages() %}
