@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField, SelectField, PasswordField
+from wtforms import StringField, SubmitField, IntegerField, SelectField, PasswordField, EmailField
 from wtforms.validators import DataRequired, NumberRange, Length
 from datetime import date
 
@@ -25,3 +25,8 @@ class LogbuchAuswahl(FlaskForm):
 class GeraeteLogin(FlaskForm):
     pin_geraet = PasswordField('Pin', validators=[DataRequired(), Length(4, 4)])
     submit = SubmitField('Laden')
+
+class WartLogin(FlaskForm):
+    email = EmailField('Benutzer', validators=[DataRequired()])
+    pw = PasswordField('Passwort')
+    submit = SubmitField('anmelden')

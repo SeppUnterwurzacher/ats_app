@@ -1,8 +1,9 @@
 from curses import flash
+import re
 from flask import render_template, url_for, redirect, make_response, flash
 from app import app, db
-from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl, GeraeteLogin
-from app.models import Geraete, Kurzpruefung
+from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl, GeraeteLogin, WartLogin
+from app.models import Geraete, Kurzpruefung, Benutzer
 from datetime import date
 import pdfkit
 from flask_login import current_user, login_user
@@ -85,6 +86,25 @@ def kpstand(geraet, grund):
 @app.route('/eingetragen/<geraet>')
 def eingetragen(geraet):
     return render_template('transmit.html', geraet=geraet)
+
+@app.route('/wart_login', methods=['GET', 'POST'])
+def wart_login():
+    # muss ich mir noch mal ansehen wie das umgesetz werden soll
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('wartgeraete'))
+        
+    form = WartLogin()
+
+    if form.validate_on_submit():
+        user = Benutzer.query.filter_by(email=form.email.data).first()
+        if user is None or not user.check_password(str(form.pw.data)):
+            flash('Ungültiger Benutzer oder Passwort', 'error')
+            return redirect(url_for('wart_login'))
+        
+        login_user(user)
+        return redirect(url_for('wartgeraete'))
+    
+    return render_template('wart/wart_login.html', form=form)
 
 
 @app.route('/wartgeraete', methods=['GET', 'POST'])
