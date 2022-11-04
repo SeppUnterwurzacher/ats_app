@@ -2,6 +2,7 @@ from datetime import date
 from app import db, login
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask import session
 
 
 class Geraete(UserMixin, db.Model):
@@ -36,7 +37,7 @@ class Kurzpruefung(db.Model):
     def __repr__(self):
         return '<Kurzpruefung {}>'.format(self.zeit)
 
-class Feuerwehren(db.Model):
+class Feuerwehren(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=False)
     strasse = db.Column(db.String(30), nullable=False)
@@ -64,4 +65,9 @@ class Benutzer(UserMixin, db.Model):
 
 @login.user_loader
 def load_geraet(id):
-    return Geraete.query.get(int(id))
+    if 'user_type' in session:
+            if session["user_type"] == "wart":
+                return Feuerwehren.query.get(int(id))
+            if session["user_type"] == "traeger":
+                return Geraete.query.get(int(id))
+    

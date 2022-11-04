@@ -5,7 +5,7 @@
         <div class="row bg-primary" style="padding-top: 0.3em; padding-bottom: 0.3em; margin-bottom:0.3em">
             <div class="col-xs-11">
                 <p style="margin-bottom: 0px; margin-top:0.3em">Atemschutzwart</p>
-                <h3 style="margin-top: 0px;">FF Trins</h3>
+                <h3 style="margin-top: 0px;">{% if fw_name %}{{ fw_name }}{% else %}FF keine{% endif %}</h3>
             </div>
             <div class="col-xs-1">
                 <img src="/static/img/wappen_feuerwehr.png" alt="Wappen Feuerwehr"  style="height: 55px; padding-top:0.5em; float:right;">

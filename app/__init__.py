@@ -13,5 +13,6 @@ migrate = Migrate(app, db)
 bootstrap = Bootstrap(app)
 fa = FontAwesome(app)
 login = LoginManager(app)
+login.login_view = 'wart_login'
 
 from app import routes, models

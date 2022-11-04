@@ -1,12 +1,11 @@
-from curses import flash
-import re
-from flask import render_template, url_for, redirect, make_response, flash
+from flask import render_template, url_for, redirect, make_response, flash, session, request
 from app import app, db
 from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl, GeraeteLogin, WartLogin
-from app.models import Geraete, Kurzpruefung, Benutzer
+from app.models import Feuerwehren, Geraete, Kurzpruefung, Benutzer
 from datetime import date
 import pdfkit
-from flask_login import current_user, login_user
+from flask_login import current_user, login_user, login_required
+from werkzeug.urls import url_parse
 
 @app.route('/')
 @app.route('/index')
@@ -16,6 +15,7 @@ def index():
 @app.route('/geraete_login/<geraet>/', methods=['GET', 'POST'])
 def geraete_login(geraet):
     form = GeraeteLogin()
+    session['user_type'] = 'traeger'
     if form.validate_on_submit():
         geraet_selected = Geraete.query.filter_by(name_geraet=geraet).first()
         if geraet_selected is None:
@@ -95,6 +95,8 @@ def wart_login():
         
     form = WartLogin()
 
+    session['user_type'] = 'wart'
+
     if form.validate_on_submit():
         user = Benutzer.query.filter_by(email=form.email.data).first()
         if user is None or not user.check_password(str(form.pw.data)):
@@ -102,31 +104,25 @@ def wart_login():
             return redirect(url_for('wart_login'))
         
         login_user(user)
-        return redirect(url_for('wartgeraete'))
+        next_page = request.args.get('next')
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('wartgeraete')
+        return redirect(next_page)
     
     return render_template('wart/wart_login.html', form=form)
 
 
 @app.route('/wartgeraete', methods=['GET', 'POST'])
+@login_required
 def wartgeraete():
     geraete = Geraete.query.all()
     form = WartNeuGeraet()
+    fw_name = current_user.name
 
-    if form.validate_on_submit():
-        eintrag = Geraete(
-            name_geraet = form.bezeichnung.data,
-            typ_geraet = form.typ.data,
-            yyyy_geraet = form.anschaffung.data
-        )
-
-        db.session.add(eintrag)
-        db.session.commit()
-
-        return redirect(url_for('wartgeraete', geraete=geraete, form=form)) 
-
-    return render_template('/wart/atsgeraete.html', geraete=geraete, form=form)
+    return render_template('/wart/atsgeraete.html', geraete=geraete, form=form, fw_name=fw_name)
 
 @app.route('/geraetedetail/<id>', methods=['GET', 'POST'])
+@login_required
 def geraetedetail(id):
     form = WartNeuGeraet()
     geraet = Geraete.query.filter(Geraete.id==id).first()
@@ -156,6 +152,7 @@ def geraetedetail(id):
     return render_template('/wart/geraetedetail.html', id=id, form=form, geraet=geraet)
 
 @app.route('/geraeteentfernen/<id>/<check>', methods=['GET', 'POST'])
+@login_required
 def geraeteentfernen(id, check):
     geraet = Geraete.query.filter(Geraete.id==id).first()  
     
@@ -168,6 +165,7 @@ def geraeteentfernen(id, check):
     return render_template('/wart/geraeteentfernen.html', id=id, geraet=geraet)
 
 @app.route('/logbuch/', methods=['GET', 'POST'])
+@login_required
 def logbuch():
     id  = 1
     year = date.today().year
@@ -190,6 +188,7 @@ def logbuch():
 
 
 @app.route('/pdflogbuch/<year>')
+@login_required
 def pdflogbuch(year):
     #year = date.today().year
     daten = []
