@@ -115,7 +115,7 @@ def wart_login():
 @app.route('/wartgeraete', methods=['GET', 'POST'])
 @login_required
 def wartgeraete():
-    geraete = Geraete.query.all()
+    geraete = Geraete.query.filter_by(id_feuerwehr=current_user.id).all()
     form = WartNeuGeraet()
     fw_name = current_user.name
 
@@ -133,8 +133,11 @@ def geraetedetail(id):
             eintrag = Geraete(
                 name_geraet = form.bezeichnung.data,
                 typ_geraet = form.typ.data,
-                yyyy_geraet = form.anschaffung.data
+                yyyy_geraet = form.anschaffung.data,
+                id_feuerwehr = current_user.id
             )
+
+            eintrag.set_password(str(form.pin.data))
 
             db.session.add(eintrag)
             db.session.commit()
@@ -143,6 +146,9 @@ def geraetedetail(id):
             geraet.name_geraet = form.bezeichnung.data
             geraet.typ_geraet = form.typ.data
             geraet.yyyy_geraet = form.anschaffung.data
+            
+            if not form.pin.data is None:
+                geraet.set_password(str(form.pin.data))
 
             db.session.add(geraet)
             db.session.commit()
@@ -167,12 +173,15 @@ def geraeteentfernen(id, check):
 @app.route('/logbuch/', methods=['GET', 'POST'])
 @login_required
 def logbuch():
-    id  = 1
+    id  = Geraete.query.filter(Geraete.id_feuerwehr==current_user.id).first()
+    if id is None:
+        return redirect(url_for('wartgeraete'))
+    id = id.id
     year = date.today().year
     daten = Kurzpruefung.query.filter(Kurzpruefung.id_geraet==id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all()
 
     form = LogbuchAuswahl()
-    geraete = Geraete.query.all()
+    geraete = Geraete.query.filter(Geraete.id_feuerwehr==current_user.id).all()
     choices_geraet = [(i.id, i.name_geraet) for i in geraete]
     form.geraet.choices = choices_geraet
     choices_jahr = [(year-i, year-i) for i in range(20)]
@@ -192,7 +201,7 @@ def logbuch():
 def pdflogbuch(year):
     #year = date.today().year
     daten = []
-    geraete = Geraete.query.all()
+    geraete = Geraete.query.filter(Geraete.id_feuerwehr==current_user.id).all()
 
     for i in geraete:
         i_daten = Kurzpruefung.query.join(Geraete, Kurzpruefung.id_geraet==Geraete.id).add_columns(Geraete.name_geraet).filter(Kurzpruefung.id_geraet==i.id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all()

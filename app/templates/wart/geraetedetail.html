@@ -25,6 +25,10 @@
             <p>{{ form.anschaffung.label() }}</p>
             <p>{{ form.anschaffung(class="form-control", value=geraet.yyyy_geraet, disabled=True) }}</p>
         </div>
+        <div id='pin' class="col-md-2" style="display: none;">
+            <p>{{ form.pin.label() }}</p>
+            <p>{{ form.pin(class="form-control") }}</p>
+        </div>
     </div>
     
     <div class="row">
@@ -42,6 +46,7 @@
             </ul>
             <script>
                 document.getElementById('abschnitts_titel').innerHTML = 'Neues Gerät anlegen'
+                document.getElementById('pin').style.display='inline-block';
                 var inputElements = document.getElementsByTagName('input');
                 for (var i=0; i < inputElements.length; i++) {
                     inputElements[i].disabled=false;
@@ -86,6 +91,7 @@
         document.getElementById('bearbeiten').style.display='none';
         document.getElementById('submit').style.display='inline-block';
         document.getElementById('loeschen').style.display='none';
+        document.getElementById('pin').style.display='inline-block';
         document.getElementById('abschnitts_titel').innerHTML = 'Gerät bearbeiten'     
         
         var inputElements = document.getElementsByTagName('input');
