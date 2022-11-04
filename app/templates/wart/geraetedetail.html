@@ -3,7 +3,7 @@
 {% block input%}
 <form class="form-group" action="" method="post">
     <div class="row">
-        <div class="col-md-6" style="margin-top: 5px;">
+        <div class="col-md-8" style="margin-top: 5px;">
             <h4 id="abschnitts_titel">Geräte Details</h4>
             <hr style="margin-bottom:10px; margin-top: 0em; height:2px;border-width:0;color:gray;background-color:rgb(190, 190, 190)">
         </div>
@@ -33,7 +33,7 @@
     
     <div class="row">
         {% if id == '0'%}
-        <div class="col-md-6">
+        <div class="col-md-8">
             <hr style="margin-bottom:5px; margin-top:4px; height:2px;border-width:0;color:gray;background-color:rgb(190, 190, 190)">
             <ul class="list-inline" style="float: right;">
                 <li id="submit" class="list-inline-item">{{ form.submit() }}</li>
@@ -46,7 +46,7 @@
             </ul>
             <script>
                 document.getElementById('abschnitts_titel').innerHTML = 'Neues Gerät anlegen'
-                document.getElementById('pin').style.display='inline-block';
+                document.getElementById('pin').style.display='block';
                 var inputElements = document.getElementsByTagName('input');
                 for (var i=0; i < inputElements.length; i++) {
                     inputElements[i].disabled=false;
@@ -54,7 +54,7 @@
             </script>
         </div>
         {% else %}
-        <div class="col-md-6">
+        <div class="col-md-8">
             <hr style="margin-bottom:10px; margin-top:4px; height:2px;border-width:0;color:gray;background-color:rgb(190, 190, 190)">
             <ul class="list-inline" style="float: right;">
                 <li id="bearbeiten" class="list-inline-item">
@@ -91,7 +91,7 @@
         document.getElementById('bearbeiten').style.display='none';
         document.getElementById('submit').style.display='inline-block';
         document.getElementById('loeschen').style.display='none';
-        document.getElementById('pin').style.display='inline-block';
+        document.getElementById('pin').style.display='block';
         document.getElementById('abschnitts_titel').innerHTML = 'Gerät bearbeiten'     
         
         var inputElements = document.getElementsByTagName('input');
