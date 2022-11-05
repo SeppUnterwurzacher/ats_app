@@ -12,36 +12,38 @@ from werkzeug.urls import url_parse
 def index():
     return render_template('index.html', title='Home')
 
-@app.route('/geraete_login/<geraet>/', methods=['GET', 'POST'])
-def geraete_login(geraet):
+@app.route('/geraete_login/<id>/', methods=['GET', 'POST'])
+def geraete_login(id):
     form = GeraeteLogin()
-    session['user_type'] = 'traeger'
+    session['user_type'] = 'traeger' # wird benötigt damit login_user das Geraete Objekt zurück gibt
+    
+    geraet_selected = Geraete.query.filter_by(id=id).first()
+    
+    if geraet_selected is None:
+        return 'Kein gültiges Gerät gewählt'
+    
     if form.validate_on_submit():
-        geraet_selected = Geraete.query.filter_by(name_geraet=geraet).first()
-        if geraet_selected is None:
-            return 'Kein gültiges Gerät gewählt'
-
         if geraet_selected.check_password(str(form.pin_geraet.data)):
             login_user(geraet_selected)
-            return redirect(url_for('auswahl', geraet=geraet))
+            return redirect(url_for('auswahl', id=id))
         else:
             flash('Pin stimmt nicht mit Gerät überein', 'error')
-            return redirect(url_for('geraete_login', geraet=geraet))
+            return redirect(url_for('geraete_login', id=id))
 
-    return render_template('geraete_login.html', geraet=geraet, form=form)
+    return render_template('geraete_login.html', id=id, geraet=geraet_selected.name_geraet, form=form)
 
 
-@app.route('/auswahl/<geraet>')
-def auswahl(geraet):
+@app.route('/auswahl/<id>')
+def auswahl(id):
     title = "Auswahl"
     if current_user.is_authenticated:
-        return render_template('auswahl.html', title=title, geraet=geraet)
+        return render_template('auswahl.html', title=title, id=id, geraet=current_user.name_geraet)
     
     return ('Zugang nicht erlaubt')
 
 
-@app.route('/kpstand/<geraet>/<grund>', methods=['GET', 'POST'])
-def kpstand(geraet, grund):
+@app.route('/kpstand/<id>/<grund>', methods=['GET', 'POST'])
+def kpstand(id, grund):
     form = KPEinsatzUebung()
 
     if grund == 'Tourlich':
@@ -53,7 +55,7 @@ def kpstand(geraet, grund):
         grund = 'Übung'
 
     if form.validate_on_submit():
-        id = Geraete.query.filter(Geraete.name_geraet==geraet).all()
+        id = Geraete.query.filter(Geraete.id==id).all()
         id = id[0].id
         
         if grund == 'Tourlich':
@@ -76,16 +78,16 @@ def kpstand(geraet, grund):
         db.session.add(eintrag)
         db.session.commit()
 
-        return redirect(url_for('eingetragen', geraet=geraet))   
+        return redirect(url_for('eingetragen'))   
     if current_user.is_authenticated:
-        return render_template('kpstandard.html', form=form, geraet=geraet, kurz=kurz)
+        return render_template('kpstandard.html', form=form, id=id, geraet=current_user.name_geraet, kurz=kurz)
 
     return ('Zugang nicht erlaubt')
 
 
-@app.route('/eingetragen/<geraet>')
-def eingetragen(geraet):
-    return render_template('transmit.html', geraet=geraet)
+@app.route('/eingetragen/')
+def eingetragen():
+    return render_template('transmit.html', geraet=current_user.name_geraet)
 
 @app.route('/wart_login', methods=['GET', 'POST'])
 def wart_login():
