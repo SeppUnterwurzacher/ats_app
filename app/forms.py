@@ -31,3 +31,8 @@ class WartLogin(FlaskForm):
     email = EmailField('Benutzer', validators=[DataRequired()])
     pw = PasswordField('Passwort')
     submit = SubmitField('anmelden')
+
+class WartQR(FlaskForm):
+    geraet = SelectField('Gerät auswählen', choices=[(1, 'Gerät 1'), (2, 'Gerät 2')], validators=[DataRequired()])
+    pin_geraet = PasswordField('Pin', validators=[DataRequired(), Length(4, 4)])
+    submit = SubmitField('QR-Code erstellen')

@@ -1,11 +1,12 @@
 from flask import render_template, url_for, redirect, make_response, flash, session, request
 from app import app, db
-from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl, GeraeteLogin, WartLogin
+from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl, GeraeteLogin, WartLogin, WartQR
 from app.models import Feuerwehren, Geraete, Kurzpruefung, Benutzer
 from datetime import date
 import pdfkit
 from flask_login import current_user, login_user, login_required
 from werkzeug.urls import url_parse
+from app.qrgenerator import qrgenerator
 
 @app.route('/')
 @app.route('/index')
@@ -226,3 +227,28 @@ def pdflogbuch(year):
         return response
     else:
         return "Keine Daten vorhanden"
+
+
+@app.route('/qrdownload', methods=['GET', 'POST'])
+@login_required
+def qrdownload():
+    form = WartQR()
+
+    # Auswahlmöglichkeiten für Dropdown befüllen
+    geraete = Geraete.query.filter(Geraete.id_feuerwehr==current_user.id).all()
+    choices_geraet = [(i.id, i.name_geraet) for i in geraete]
+    form.geraet.choices = choices_geraet
+
+    if form.validate_on_submit():
+        geraet_selected = Geraete.query.filter(Geraete.id==form.geraet.data).first()
+        if not geraet_selected is None and geraet_selected.check_password(str(form.pin_geraet.data)):
+            
+            qr_code = qrgenerator(url_for('geraete_login', id=geraet_selected.id), form.pin_geraet.data, form.geraet.data)
+            qr_url = url_for('static', filename=qr_code)
+            return render_template('/wart/qrdownload.html', form=form, qr_url=qr_url)
+
+        else:
+            flash('Pin stimmt nicht mit Gerät überein', 'error')
+            return redirect(url_for('qrdownload'))
+
+    return render_template('/wart/qrdownload.html', form=form)

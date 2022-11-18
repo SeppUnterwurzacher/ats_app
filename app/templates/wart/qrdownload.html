@@ -1,0 +1,47 @@
+{% extends 'base_wart.html'%}
+
+{% block input%}
+<form id='auswahl' class="form-group" action="" method="post">
+    <div class="row" style="margin-top: 8px;">
+        {{ form.hidden_tag() }}
+        <div class="col-md-5">
+                <p>
+                    {{ form.geraet(class="form-control") }}
+                </p>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 8px;">
+        <div class="col-md-5">
+            <p>
+                {{ form.pin_geraet(class="form-control", placeholder='Pin eingeben')}}
+            </p>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                    <p style="color:red;">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+</form>
+<div class="row">
+    <div class="col-md-5">
+        {% if qr_url %}
+        <div class="text-center">
+            <img src={{ qr_url }} alt="QR Code">
+        </div>
+        
+        <br>
+        <a href="{{ qr_url }}" class="btn btn-primary btn-block btn-lg" download><span class="fas fa-download"></span></a>
+        {% endif %}
+        
+    </div>
+</div>
+
+<script>
+    document.getElementById('tab_geraete').className = ""
+    document.getElementById('tab_logbuch').className = ""
+    document.getElementById('tab_qr').className = "active"
+</script>
+{% endblock %}
