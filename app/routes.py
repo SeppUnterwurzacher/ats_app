@@ -245,7 +245,7 @@ def qrdownload():
             
             qr_code = qrgenerator(url_for('geraete_login', id=geraet_selected.id), form.pin_geraet.data, form.geraet.data)
             qr_url = url_for('static', filename=qr_code)
-            return render_template('/wart/qrdownload.html', form=form, qr_url=qr_url)
+            return render_template('/wart/qrdownload.html', form=form, qr_url=qr_url, fw_name=current_user.name)
 
         else:
             flash('Pin stimmt nicht mit Gerät überein', 'error')
