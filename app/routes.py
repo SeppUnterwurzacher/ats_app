@@ -196,7 +196,7 @@ def logbuch():
         daten = Kurzpruefung.query.filter(Kurzpruefung.id_geraet==id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all()
         return render_template('/wart/logbuch.html', daten=daten, form=form, year=year)
 
-    return render_template('/wart/logbuch.html', daten=daten, form=form, year=year)
+    return render_template('/wart/logbuch.html', daten=daten, form=form, year=year, fw_name=current_user.name)
 
 
 @app.route('/pdflogbuch/<year>')
@@ -251,4 +251,4 @@ def qrdownload():
             flash('Pin stimmt nicht mit Gerät überein', 'error')
             return redirect(url_for('qrdownload'))
 
-    return render_template('/wart/qrdownload.html', form=form)
+    return render_template('/wart/qrdownload.html', form=form, fw_name=current_user.name)
