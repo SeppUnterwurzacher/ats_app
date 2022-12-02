@@ -13,7 +13,7 @@ class KPEinsatzUebung(FlaskForm):
 
 class WartNeuGeraet(FlaskForm):
     bezeichnung = StringField('Bezeichnung:', validators=[DataRequired()])
-    typ = StringField('Typ des Geräts:', validators=[DataRequired()])
+    typ = SelectField('Typ des Geräts:', choices=[('200bar', '200bar'), ('300bar', '300bar')], validators=[DataRequired()])
     anschaffung = IntegerField('Jahr der Anschaffung:', validators=[DataRequired(), NumberRange(min=1000, max=date.today().year)])
     pin = IntegerField('Pin', validators=[DataRequired(), NumberRange(min=1000, max=9999)])
     submit = SubmitField('Eintragen')

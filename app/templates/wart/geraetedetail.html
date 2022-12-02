@@ -51,6 +51,8 @@
                 for (var i=0; i < inputElements.length; i++) {
                     inputElements[i].disabled=false;
                 }
+                <!-- Gerätetyp muss seperat aktiviert werden, da select -->
+                document.getElementById('typ').disabled=false;
             </script>
         </div>
         {% else %}
@@ -98,6 +100,9 @@
         for (var i=0; i < inputElements.length; i++) {
             inputElements[i].disabled=false;
         }
+
+        <!-- Gerätetyp muss seperat aktiviert werden, da select -->
+        document.getElementById('typ').disabled=false;
     }     
 </script>
 {% endblock%}
