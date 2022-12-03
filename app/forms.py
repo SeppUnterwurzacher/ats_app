@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField, SelectField, PasswordField, EmailField
-from wtforms.validators import DataRequired, NumberRange, Length
+from wtforms.validators import DataRequired, NumberRange, Length, Optional
 from datetime import date
 
 
@@ -15,7 +15,7 @@ class WartNeuGeraet(FlaskForm):
     bezeichnung = StringField('Bezeichnung:', validators=[DataRequired()])
     typ = SelectField('Typ des Geräts:', choices=[('200bar', '200bar'), ('300bar', '300bar')], validators=[DataRequired()])
     anschaffung = IntegerField('Jahr der Anschaffung:', validators=[DataRequired(), NumberRange(min=1000, max=date.today().year)])
-    pin = IntegerField('Pin', validators=[DataRequired(), NumberRange(min=1000, max=9999)])
+    pin = IntegerField('Pin festlegen/ändern', validators=[Optional(), NumberRange(min=1000, max=9999)])
     submit = SubmitField('Eintragen')
 
 class LogbuchAuswahl(FlaskForm):

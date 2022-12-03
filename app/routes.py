@@ -158,7 +158,7 @@ def geraetedetail(id):
 
         return redirect(url_for('wartgeraete', geraete=geraet, form=form))
 
-    return render_template('/wart/geraetedetail.html', id=id, form=form, geraet=geraet)
+    return render_template('/wart/geraetedetail.html', id=id, form=form, geraet=geraet, fw_name=current_user.name)
 
 @app.route('/geraeteentfernen/<id>/<check>', methods=['GET', 'POST'])
 @login_required
@@ -183,6 +183,9 @@ def logbuch():
     year = date.today().year
     daten = Kurzpruefung.query.filter(Kurzpruefung.id_geraet==id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all()
 
+    typ_geraet = Geraete.query.filter(Geraete.id==id).first()
+    typ_geraet = typ_geraet.typ_geraet
+
     form = LogbuchAuswahl()
     geraete = Geraete.query.filter(Geraete.id_feuerwehr==current_user.id).all()
     choices_geraet = [(i.id, i.name_geraet) for i in geraete]
@@ -194,9 +197,13 @@ def logbuch():
         id = form.geraet.data
         year = form.year.data
         daten = Kurzpruefung.query.filter(Kurzpruefung.id_geraet==id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all()
-        return render_template('/wart/logbuch.html', daten=daten, form=form, year=year, fw_name=current_user.name)
 
-    return render_template('/wart/logbuch.html', daten=daten, form=form, year=year, fw_name=current_user.name)
+        typ_geraet = Geraete.query.filter(Geraete.id==id).first()
+        typ_geraet = typ_geraet.typ_geraet
+
+        return render_template('/wart/logbuch.html', daten=daten, form=form, year=year, fw_name=current_user.name, typ_geraet=typ_geraet)
+
+    return render_template('/wart/logbuch.html', daten=daten, form=form, year=year, fw_name=current_user.name, typ_geraet=typ_geraet)
 
 
 @app.route('/pdflogbuch/<year>')
@@ -207,7 +214,7 @@ def pdflogbuch(year):
     geraete = Geraete.query.filter(Geraete.id_feuerwehr==current_user.id).all()
 
     for i in geraete:
-        i_daten = Kurzpruefung.query.join(Geraete, Kurzpruefung.id_geraet==Geraete.id).add_columns(Geraete.name_geraet).filter(Kurzpruefung.id_geraet==i.id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all()
+        i_daten = Kurzpruefung.query.join(Geraete, Kurzpruefung.id_geraet==Geraete.id).add_columns(Geraete.name_geraet, Geraete.typ_geraet).filter(Kurzpruefung.id_geraet==i.id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all()
         if len(i_daten) > 0:
             daten.append(i_daten)
 

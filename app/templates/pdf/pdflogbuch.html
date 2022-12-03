@@ -45,7 +45,11 @@
             <tr>
                 <td>{{ eintrag[0].zeit }}</td>
                 <td>{{ eintrag[0].grund }}</td>
+                {% if geraet[0].typ_geraet=='200bar' %}
                 <td>{{ eintrag[0].druck1 }}/{{ eintrag[0].druck2 }}</td>
+                {% else %}
+                <td>{{ eintrag[0].druck1 }}</td>
+                {% endif %}
                 <td>{% if eintrag[0].dichtheit %}ok{% else %}nein{% endif%}</td>
                 <td>{% if eintrag[0].warnsignal %}ok{% else %}nein{% endif%}</td>
                 <td>{% if eintrag[0].geraetetraeger %}{{ eintrag[0].geraetetraeger }}{% endif%}</td>
