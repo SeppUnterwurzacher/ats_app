@@ -81,7 +81,7 @@ def kpstand(id, grund):
 
         return redirect(url_for('eingetragen'))   
     if current_user.is_authenticated:
-        return render_template('kpstandard.html', form=form, id=id, geraet=current_user.name_geraet, kurz=kurz)
+        return render_template('kpstandard.html', form=form, id=id, geraet=current_user.name_geraet, typ=current_user.typ_geraet, kurz=kurz)
 
     return ('Zugang nicht erlaubt')
 
