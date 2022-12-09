@@ -18,7 +18,10 @@
         
         <div class="col-md-2">
             <p>{{ form.typ.label() }}</p>
-            <p>{{ form.typ(class="form-control", value=geraet.typ_geraet, disabled=True) }}</p>
+            <p>{{ form.typ(class="form-control", select=geraet.typ_geraet, disabled=True) }}</p>
+            {% if geraet.typ_geraet == '300bar' %}
+            <script>document.querySelector('#typ').options[1].selected = true;</script>
+            {% endif %}
         </div>
         
         <div class="col-md-2">
