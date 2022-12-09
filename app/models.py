@@ -10,6 +10,7 @@ class Geraete(UserMixin, db.Model):
     name_geraet = db.Column(db.String(30), unique=True, nullable=False)
     typ_geraet = db.Column(db.String(15))
     yyyy_geraet = db.Column(db.Integer)
+    info_geraet = db. Column(db.String(400))
     password_hash = db.Column(db.String(128))
     id_feuerwehr = db.Column(db.Integer, db.ForeignKey('feuerwehren.id'))
 
