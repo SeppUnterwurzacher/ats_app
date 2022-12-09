@@ -137,6 +137,7 @@ def geraetedetail(id):
                 name_geraet = form.bezeichnung.data,
                 typ_geraet = form.typ.data,
                 yyyy_geraet = form.anschaffung.data,
+                info_geraet = form.info.data,
                 id_feuerwehr = current_user.id
             )
 
@@ -149,6 +150,7 @@ def geraetedetail(id):
             geraet.name_geraet = form.bezeichnung.data
             geraet.typ_geraet = form.typ.data
             geraet.yyyy_geraet = form.anschaffung.data
+            geraet.info_geraet = form.info.data
             
             if not form.pin.data is None:
                 geraet.set_password(str(form.pin.data))
