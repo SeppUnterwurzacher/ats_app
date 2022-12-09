@@ -4,7 +4,7 @@ from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl, GeraeteLog
 from app.models import Feuerwehren, Geraete, Kurzpruefung, Benutzer
 from datetime import date
 import pdfkit
-from flask_login import current_user, login_user, login_required
+from flask_login import current_user, login_user, login_required, logout_user
 from werkzeug.urls import url_parse
 from app.qrgenerator import qrgenerator
 
@@ -114,6 +114,10 @@ def wart_login():
     
     return render_template('wart/wart_login.html', form=form)
 
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('wart_login'))
 
 @app.route('/wartgeraete', methods=['GET', 'POST'])
 @login_required

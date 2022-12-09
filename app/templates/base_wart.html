@@ -8,7 +8,14 @@
                 <h3 style="margin-top: 0px;">{% if fw_name %}{{ fw_name }}{% else %}FF keine{% endif %}</h3>
             </div>
             <div class="col-xs-1">
-                <img src="/static/img/wappen_feuerwehr.png" alt="Wappen Feuerwehr"  style="height: 55px; padding-top:0.5em; float:right;">
+                <img src="/static/img/wappen_feuerwehr.png" alt="Wappen Feuerwehr"  style="height: 55px; padding-top:0.5em; padding-left:0.5em; float:right;">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <a href="{{ url_for('logout') }}"><span class="fas fa-power-off" style="padding-left:0.5em; float: right;"></span></a>
+                <span class="fas fa-user" style="float: right;"></span>
+                
             </div>
         </div>
         <div class="row">
