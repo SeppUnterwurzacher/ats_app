@@ -1,0 +1,43 @@
+{% extends 'base_wart.html' %}
+
+{% block input %}
+<div class="row">
+    <div class="col-xs-4">
+        <h4 style="padding-bottom: 0em;">Feuerwehr Profil<span class="fas fa-edit" style="padding-left: 1.2em; font-size: small;" onclick="editfeuerwehr();"></span></h4>
+        <hr style="margin-bottom:10px; margin-top: 0em; height:2px;border-width:0;color:gray;background-color:rgb(190, 190, 190)">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-4">
+        <!-- Liste mit Daten zur Feuerwehr -->
+        <ul id="data-ff" style="list-style-type:none; padding-inline-start: 0px">
+            <li><b>Name:</b> {{current_user.name}} </p></li>
+            <li><b>Adresse:</b> {{current_user.strasse}}, {{current_user.plz}} {{current_user.ort}}</p></li>
+        </ul>
+
+        <!-- form zum Bearbeiten -->
+        <form id="edit-ff" class="form-group" style="display: none;" action="" method="post">
+            {{ form.hidden_tag() }}
+            <p>{{ form.name.label() }}: {{ form.name(class="form-control", value=current_user.name) }}</p>
+            <p>{{ form.strasse.label() }}: {{ form.strasse(class="form-control", value=current_user.strasse) }}</p>
+            <p>{{ form.ort.label() }}: {{ form.ort(class="form-control", value=current_user.ort) }}</p>
+            <p>{{ form.plz.label() }}: {{ form.plz(class="form-control", value=current_user.plz) }}</p> 
+            <p>{{ form.submit() }}</p>           
+        </form>
+        
+    </div>
+    
+</div>
+
+
+<script>
+    <!-- blendet Tab-Leiste aus -->
+    document.getElementById('tabs').style.display='none';
+
+    function editfeuerwehr() {
+        document.getElementById("data-ff").style.display = "none"
+        document.getElementById("edit-ff").style.display = "block"
+    }
+</script>
+{% endblock %}
+

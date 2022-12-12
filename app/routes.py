@@ -1,6 +1,6 @@
 from flask import render_template, url_for, redirect, make_response, flash, session, request
 from app import app, db
-from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl, GeraeteLogin, WartLogin, WartQR
+from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl, GeraeteLogin, WartLogin, WartQR, EditFeuerwehr
 from app.models import Feuerwehren, Geraete, Kurzpruefung, Benutzer
 from datetime import date
 import pdfkit
@@ -265,3 +265,30 @@ def qrdownload():
             return redirect(url_for('qrdownload'))
 
     return render_template('/wart/qrdownload.html', form=form, fw_name=current_user.name)
+
+
+@app.route('/benutzer', methods=['GET', 'POST'])
+@login_required
+def benutzer():
+    form = EditFeuerwehr()
+
+    if form.validate_on_submit():
+        ff_selected = Feuerwehren.query.filter(Feuerwehren.id==current_user.id).first()
+
+        ff_selected.name = form.name.data
+        ff_selected.strasse = form.strasse.data
+        ff_selected.plz = form.plz.data
+        ff_selected.ort = form.ort.data
+
+        db.session.add(ff_selected)
+        db.session.commit()
+
+        current_user.name = form.name.data
+        current_user.strasse = form.strasse.data
+        current_user.plz = form.plz.data
+        current_user.ort = form.ort.data
+
+        return redirect(url_for('benutzer', form=form, fw_name=current_user.name))
+        
+
+    return render_template('wart/benutzer.html', form=form, fw_name=current_user.name)

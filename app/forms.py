@@ -37,3 +37,10 @@ class WartQR(FlaskForm):
     geraet = SelectField('Gerät auswählen', choices=[(1, 'Gerät 1'), (2, 'Gerät 2')], validators=[DataRequired()])
     pin_geraet = PasswordField('Pin', validators=[DataRequired(), Length(4, 4)])
     submit = SubmitField('QR-Code erstellen')
+
+class EditFeuerwehr(FlaskForm):
+    name = StringField('Name Feuerwehr', validators=[DataRequired()])
+    strasse = StringField('Strasse mit Hausnummer', validators=[DataRequired()])
+    plz = IntegerField('Plz', validators=[DataRequired(), NumberRange(min=1000, max=9999)])
+    ort = StringField('Ort', validators=[DataRequired()])
+    submit = SubmitField('speichern')

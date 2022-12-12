@@ -14,12 +14,12 @@
         <div class="row">
             <div class="col-xs-12">
                 <a href="{{ url_for('logout') }}"><span class="fas fa-power-off" style="padding-left:0.5em; float: right;"></span></a>
-                <span class="fas fa-user" style="float: right;"></span>
+                <a href="{{ url_for('benutzer') }}"><span class="fas fa-user" style="float: right;"></span></a>
                 
             </div>
         </div>
         <div class="row">
-            <ul class="nav nav-tabs">
+            <ul id='tabs' class="nav nav-tabs">
                 <li id="tab_geraete" class="active tab"><a href="{{ url_for('wartgeraete') }}">Geräte</a></li>
                 <li id="tab_logbuch"><a href="{{ url_for('logbuch') }}">Logbuch</a></li>
                 <li id="tab_qr"><a href="{{ url_for('qrdownload') }}">QR-Code</a></li>
