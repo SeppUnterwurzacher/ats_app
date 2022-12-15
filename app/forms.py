@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField, SelectField, PasswordField, EmailField, TextAreaField
-from wtforms.validators import DataRequired, NumberRange, Length, Optional
+from wtforms.validators import DataRequired, NumberRange, Length, Optional, Email, EqualTo
 from datetime import date
 
 
@@ -44,3 +44,13 @@ class EditFeuerwehr(FlaskForm):
     plz = IntegerField('Plz', validators=[DataRequired(), NumberRange(min=1000, max=9999)])
     ort = StringField('Ort', validators=[DataRequired()])
     submit = SubmitField('speichern')
+
+class EditBenutzer(FlaskForm):
+    benutzer = StringField('Name', validators=[DataRequired()])
+    email = EmailField('E-Mail', validators=[DataRequired(), Email()])
+    submit_bn = SubmitField('speichern')
+
+class EditPasswort(FlaskForm):
+    passwort1 = PasswordField('Passwort', validators=[DataRequired(), EqualTo('passwort2', message='Eingabe stimmt nicht')])
+    passwort2 = PasswordField('wiederholen', validators=[DataRequired()])
+    submit_pw = SubmitField('speichern')

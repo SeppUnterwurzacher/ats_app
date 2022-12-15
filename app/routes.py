@@ -1,6 +1,6 @@
 from flask import render_template, url_for, redirect, make_response, flash, session, request
 from app import app, db
-from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl, GeraeteLogin, WartLogin, WartQR, EditFeuerwehr
+from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl, GeraeteLogin, WartLogin, WartQR, EditFeuerwehr, EditBenutzer, EditPasswort
 from app.models import Feuerwehren, Geraete, Kurzpruefung, Benutzer
 from datetime import date
 import pdfkit
@@ -106,7 +106,12 @@ def wart_login():
             flash('Ungültiger Benutzer oder Passwort', 'error')
             return redirect(url_for('wart_login'))
         
+        # id von Benutzer wird seperat in session abgespeichert, da login Funktion die Feuerwehr aufnimmt
+        session['benutzer_id'] = user.id
+
         login_user(user)
+        
+        # next_page wäre dazu da wenn eine andere Seite als Login direkt angesteuert wurde
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('wartgeraete')
@@ -271,6 +276,9 @@ def qrdownload():
 @login_required
 def benutzer():
     form = EditFeuerwehr()
+    form_benutzer = EditBenutzer()
+    form_passwort = EditPasswort()
+    benutzer = Benutzer.query.filter(Benutzer.id == session['benutzer_id']).first()
 
     if form.validate_on_submit():
         ff_selected = Feuerwehren.query.filter(Feuerwehren.id==current_user.id).first()
@@ -288,7 +296,24 @@ def benutzer():
         current_user.plz = form.plz.data
         current_user.ort = form.ort.data
 
-        return redirect(url_for('benutzer', form=form, fw_name=current_user.name))
-        
+        return redirect(url_for('benutzer', form=form, form_benutzer=form_benutzer, form_passwort=form_passwort, fw_name=current_user.name, benutzer=benutzer))
 
-    return render_template('wart/benutzer.html', form=form, fw_name=current_user.name)
+    if form_benutzer.validate_on_submit():
+        benutzer.benutzer = form_benutzer.benutzer.data
+        benutzer.email = form_benutzer.email.data
+
+        db.session.add(benutzer)
+        db.session.commit()
+
+        return redirect(url_for('benutzer', form=form, form_benutzer=form_benutzer, form_passwort=form_passwort, fw_name=current_user.name, benutzer=benutzer)) 
+
+    if form_passwort.validate_on_submit():
+        benutzer = Benutzer.query.filter(Benutzer.id == session['benutzer_id']).first()
+        benutzer.set_password(form_passwort.passwort1.data)
+
+        db.session.add(benutzer)
+        db.session.commit()
+
+        return redirect(url_for('wartgeraete', form=form, form_benutzer=form_benutzer, form_passwort=form_passwort, fw_name=current_user.name, benutzer=benutzer)) 
+
+    return render_template('wart/benutzer.html', form=form, form_benutzer=form_benutzer, form_passwort=form_passwort, fw_name=current_user.name, benutzer=benutzer)
