@@ -118,7 +118,7 @@
                 <p>Der Druck muss mindestens  270bar betragen.</p>
                 
                 <p>Flasche öffnen, kurz warten, wieder schließen, Druck eingeben:</p>
-                <p>{{ form.druckl(class="form-control", placeholder="min 280 bar", min="280") }}</p>
+                <p>{{ form.druckl(class="form-control", placeholder="min 270 bar", min="270") }}</p>
                 <p id="error_druckl" class="error">Druck nicht im zulässigen Bereich</p>
                 <p style="display: none;">{{ form.druckr(class="form-control", value=0) }}</p>
                 {% endif %}
@@ -313,7 +313,7 @@
                     document.getElementById('druck').style.display='none';
                 }
             } else {
-                if (druckl < 280 || druckl > 350 || druckl == ""){
+                if (druckl < 270 || druckl > 350 || druckl == ""){
                     document.getElementById('error_druckl').style.display='block';
                 } else {
                     document.getElementById('dicht').style.display='block'; 
