@@ -13,3 +13,13 @@ input[type=submit] {
     border-radius: 6px;
     width: 100%;
 }
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.klein {
+    font-size: x-small;
+}
