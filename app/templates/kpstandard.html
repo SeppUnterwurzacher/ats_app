@@ -115,7 +115,7 @@
                 <p>{{ form.druckr(class="form-control", placeholder="min 180 bar") }}</p>
                 <p id="error_druckr" class="error">Druck nicht im zulässigen Bereich</p>
                 {% else %} 
-                <p>Der Druck muss mindestens  280bar betragen.</p>
+                <p>Der Druck muss mindestens  270bar betragen.</p>
                 
                 <p>Flasche öffnen, kurz warten, wieder schließen, Druck eingeben:</p>
                 <p>{{ form.druckl(class="form-control", placeholder="min 280 bar", min="280") }}</p>
@@ -193,7 +193,7 @@
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1" style="padding-right: 0em; padding-left: 0em">
                 <h4>Warnsignal</h4>
-                <p>Druck langsam ablassen, spätestens bei 55bar sollte das Warnsignal ertönen.</p>
+                <p>Druck langsam ablassen, zwischen 50 und 60bar sollte das Warnsignal ertönen.</p>
                 <br>
             </div>
         </div>
