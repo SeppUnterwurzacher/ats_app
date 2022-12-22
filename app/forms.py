@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField, SelectField, PasswordField, EmailField, TextAreaField
-from wtforms.validators import DataRequired, NumberRange, Length, Optional, Email, EqualTo
+from wtforms.validators import DataRequired, NumberRange, Length, Optional, Email, EqualTo, ValidationError
 from datetime import date
+from app.models import Geraete
+from flask_login import current_user
 
 
 class KPEinsatzUebung(FlaskForm):
@@ -18,6 +20,12 @@ class WartNeuGeraet(FlaskForm):
     info = TextAreaField('Zusatz Info',validators=[Optional()])
     pin = IntegerField('Pin festlegen/ändern', validators=[Optional(), NumberRange(min=1000, max=9999)])
     submit = SubmitField('Eintragen')
+
+    def validate_bezeichnung(self, bezeichnung):
+        geraet = Geraete.query.filter_by(name_geraet=bezeichnung.data, id_feuerwehr=current_user.id).first()
+
+        if geraet is not None:
+            raise ValidationError('Diese Bezeichnung ist in deiner Feuerwehr schon vorhanden')
 
 class LogbuchAuswahl(FlaskForm):
     geraet = SelectField('Gerät auswählen', choices=[(1, 'Gerät 1'), (2, 'Gerät 2')], validators=[DataRequired()])
