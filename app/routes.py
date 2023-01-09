@@ -191,7 +191,14 @@ def logbuch():
     if id is None:
         return redirect(url_for('wartgeraete'))
     id = id.id
+    
+    # Jahre für Choice Input festlegen
+    geraete_ff = Geraete.query.filter(Geraete.id_feuerwehr==current_user.id).with_entities(Geraete.id).all()
     year = date.today().year
+    year_min = Kurzpruefung.query.filter(Kurzpruefung.id_geraet == id).with_entities(Kurzpruefung.zeit).order_by(Kurzpruefung.zeit).first()
+    year_min = year_min[0].year
+    year_diff = year - year_min + 1
+    
     daten = Kurzpruefung.query.filter(Kurzpruefung.id_geraet==id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all()
 
     typ_geraet = Geraete.query.filter(Geraete.id==id).first()
@@ -201,7 +208,7 @@ def logbuch():
     geraete = Geraete.query.filter(Geraete.id_feuerwehr==current_user.id).all()
     choices_geraet = [(i.id, i.name_geraet) for i in geraete]
     form.geraet.choices = choices_geraet
-    choices_jahr = [(year-i, year-i) for i in range(20)]
+    choices_jahr = [(year-i, year-i) for i in range(year_diff)]
     form.year.choices = choices_jahr
 
     if form.validate_on_submit():
