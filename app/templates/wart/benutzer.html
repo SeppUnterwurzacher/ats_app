@@ -1,0 +1,117 @@
+{% extends 'base_wart.html' %}
+
+{% block input %}
+<div class="row">
+    <div class="col-md-4">
+        <h4 style="padding-bottom: 0em;">Feuerwehr Profil<span class="fas fa-edit" style="padding-left: 1.2em; font-size: small;" onclick="editfeuerwehr();"></span></h4>
+        <hr style="margin-bottom:10px; margin-top: 0em; height:2px;border-width:0;color:gray;background-color:rgb(190, 190, 190)">
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <!-- Liste mit Daten zur Feuerwehr -->
+        <ul id="data-ff" style="list-style-type:none; padding-inline-start: 0px">
+            <li><b>Name:</b> {{current_user.name}} </p></li>
+            <li><b>Adresse:</b> {{current_user.strasse}}, {{current_user.plz}} {{current_user.ort}}</p></li>
+        </ul>
+
+        <!-- form zum Bearbeiten -->
+        <form id="edit-ff" class="form-group" style="display: none;" action="" method="post">
+            {{ form.hidden_tag() }}
+            <p>{{ form.name.label() }}: {{ form.name(class="form-control", value=current_user.name) }}</p>
+            <p>{{ form.strasse.label() }}: {{ form.strasse(class="form-control", value=current_user.strasse) }}</p>
+            <p>{{ form.ort.label() }}: {{ form.ort(class="form-control", value=current_user.ort) }}</p>
+            <p>{{ form.plz.label() }}: {{ form.plz(class="form-control", value=current_user.plz) }}</p> 
+            <p>{{ form.submit() }}</p>           
+        </form>
+    </div>
+</div>
+
+<div class="row" style="padding-top: 2em;">
+    <div class="col-md-4">
+        <h4 style="padding-bottom: 0em;">Benutzer Profil<span class="fas fa-edit" style="padding-left: 1.2em; font-size: small;" onclick="editbenutzer();"></span></h4>
+        <hr style="margin-bottom:10px; margin-top: 0em; height:2px;border-width:0;color:gray;background-color:rgb(190, 190, 190)">
+    </div>
+</div>
+    
+<div class="row">
+    <div class="col-md-4">
+        <!-- Liste mit Daten zur Feuerwehr -->
+        <ul id="data-benutzer" style="list-style-type:none; padding-inline-start: 0px">
+            <li><b>Name:</b> {{benutzer.benutzer}} </p></li>
+            <li><b>E-Mail:</b> {{benutzer.email}}</p></li>
+        </ul>
+        <a id="link-passwort" onclick="editpasswort()">Passwort ändern</a>
+
+        <!-- form zum Bearbeiten -->
+        <form id="edit-benutzer" class="form-group" style="display: none;" action="" method="post">
+            {{ form_benutzer.hidden_tag() }}
+            <p>{{ form_benutzer.benutzer.label() }}: {{ form_benutzer.benutzer(class="form-control", value=benutzer.benutzer) }}</p>
+            <p>{{ form_benutzer.email.label() }}: {{ form_benutzer.email(class="form-control", value=benutzer.email) }}</p>
+            <p>{{ form_benutzer.submit_bn() }}</p>           
+        </form>
+
+        <!-- form zum Passwort ändern -->
+        <form id="edit-passwort" class="form-group" style="display: none;" action="" method="post">
+            {{ form_passwort.hidden_tag() }}
+            <p>{{ form_passwort.passwort1(class="form-control", placeholder="neues Passwort") }}</p>
+            <p>{{ form_passwort.passwort2(class="form-control", placeholder="wiederholen") }}</p>
+            <p>{{ form_passwort.submit_pw() }}</p>           
+        </form>
+    </div>
+</div>
+
+<div class="row" style="padding-top: 2em;">
+    <div class="col-md-4">
+        <button
+            type="button" 
+            class="btn btn-block btn-lg" 
+            onclick="location.href='{{ url_for('wartgeraete') }}'">
+            <span class="fas fa-arrow-left"></span>
+    </button>
+    </div>
+</div>
+
+
+<script>
+    <!-- blendet Tab-Leiste aus -->
+    document.getElementById('tabs').style.display='none';
+
+    function editfeuerwehr() {
+        document.getElementById("data-ff").style.display = "none"
+        document.getElementById("edit-ff").style.display = "block"
+    }
+
+    function editbenutzer() {
+        document.getElementById("data-benutzer").style.display = "none"
+        document.getElementById("edit-benutzer").style.display = "block"
+    }
+
+    function editpasswort() {
+        document.getElementById("link-passwort").style.display = "none"
+        document.getElementById("edit-passwort").style.display = "block"
+    }
+
+    document.getElementById("passwort1").addEventListener("keyup", pw_vergleich)
+    document.getElementById("passwort2").addEventListener("keyup", pw_vergleich)
+
+
+    function pw_vergleich() {
+        var passwort1 = document.getElementById("passwort1").value;
+        var passwort2 = document.getElementById("passwort2").value;
+
+        if (passwort1 != passwort2){
+            document.getElementById('submit_pw').disabled = true;
+            document.getElementById('submit_pw').value = 'Eingabe stimmt nicht überein';
+            document.getElementById('submit_pw').style.backgroundColor = 'lightgrey';
+
+        } else {
+            document.getElementById('submit_pw').disabled = false;
+            document.getElementById('submit_pw').value = 'speichern';
+            document.getElementById('submit_pw').style.backgroundColor = '#5cb85c';
+        }
+    };
+    
+</script>
+{% endblock %}
+

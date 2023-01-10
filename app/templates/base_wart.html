@@ -8,11 +8,18 @@
                 <h3 style="margin-top: 0px;">{% if fw_name %}{{ fw_name }}{% else %}FF keine{% endif %}</h3>
             </div>
             <div class="col-xs-1">
-                <img src="/static/img/wappen_feuerwehr.png" alt="Wappen Feuerwehr"  style="height: 55px; padding-top:0.5em; float:right;">
+                <img src="/static/img/wappen_feuerwehr.png" alt="Wappen Feuerwehr"  style="height: 55px; padding-top:0.5em; padding-left:0.5em; float:right;">
             </div>
         </div>
         <div class="row">
-            <ul class="nav nav-tabs">
+            <div class="col-xs-12">
+                <a href="{{ url_for('logout') }}"><span class="fas fa-power-off" style="padding-left:0.5em; float: right;"></span></a>
+                <a href="{{ url_for('benutzer') }}"><span class="fas fa-user" style="float: right;"></span></a>
+                
+            </div>
+        </div>
+        <div class="row">
+            <ul id='tabs' class="nav nav-tabs">
                 <li id="tab_geraete" class="active tab"><a href="{{ url_for('wartgeraete') }}">Geräte</a></li>
                 <li id="tab_logbuch"><a href="{{ url_for('logbuch') }}">Logbuch</a></li>
                 <li id="tab_qr"><a href="{{ url_for('qrdownload') }}">QR-Code</a></li>
@@ -21,6 +28,13 @@
         
         
         {% block input %}{% endblock %}
-    </div>    
+    </div>
+    <!-- <div class="container-fluid">
+        <div class="row footer" style="padding-top: 0.5em; background-color: rgb(238, 238, 238);">
+            <div class="col-xs-12 klein text-center">
+                <p>Impressum</p>
+            </div>
+        </div>
+    </div>     -->
 {% endblock %}
 

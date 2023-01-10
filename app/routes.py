@@ -1,10 +1,10 @@
 from flask import render_template, url_for, redirect, make_response, flash, session, request
 from app import app, db
-from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl, GeraeteLogin, WartLogin, WartQR
+from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl, GeraeteLogin, WartLogin, WartQR, EditFeuerwehr, EditBenutzer, EditPasswort
 from app.models import Feuerwehren, Geraete, Kurzpruefung, Benutzer
 from datetime import date
 import pdfkit
-from flask_login import current_user, login_user, login_required
+from flask_login import current_user, login_user, login_required, logout_user
 from werkzeug.urls import url_parse
 from app.qrgenerator import qrgenerator
 
@@ -81,7 +81,7 @@ def kpstand(id, grund):
 
         return redirect(url_for('eingetragen'))   
     if current_user.is_authenticated:
-        return render_template('kpstandard.html', form=form, id=id, geraet=current_user.name_geraet, kurz=kurz)
+        return render_template('kpstandard.html', form=form, id=id, geraet=current_user.name_geraet, typ=current_user.typ_geraet, kurz=kurz)
 
     return ('Zugang nicht erlaubt')
 
@@ -106,7 +106,12 @@ def wart_login():
             flash('Ungültiger Benutzer oder Passwort', 'error')
             return redirect(url_for('wart_login'))
         
+        # id von Benutzer wird seperat in session abgespeichert, da login Funktion die Feuerwehr aufnimmt
+        session['benutzer_id'] = user.id
+
         login_user(user)
+        
+        # next_page wäre dazu da wenn eine andere Seite als Login direkt angesteuert wurde
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('wartgeraete')
@@ -114,6 +119,10 @@ def wart_login():
     
     return render_template('wart/wart_login.html', form=form)
 
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('wart_login'))
 
 @app.route('/wartgeraete', methods=['GET', 'POST'])
 @login_required
@@ -137,6 +146,7 @@ def geraetedetail(id):
                 name_geraet = form.bezeichnung.data,
                 typ_geraet = form.typ.data,
                 yyyy_geraet = form.anschaffung.data,
+                info_geraet = form.info.data,
                 id_feuerwehr = current_user.id
             )
 
@@ -149,6 +159,7 @@ def geraetedetail(id):
             geraet.name_geraet = form.bezeichnung.data
             geraet.typ_geraet = form.typ.data
             geraet.yyyy_geraet = form.anschaffung.data
+            geraet.info_geraet = form.info.data
             
             if not form.pin.data is None:
                 geraet.set_password(str(form.pin.data))
@@ -158,7 +169,7 @@ def geraetedetail(id):
 
         return redirect(url_for('wartgeraete', geraete=geraet, form=form))
 
-    return render_template('/wart/geraetedetail.html', id=id, form=form, geraet=geraet)
+    return render_template('/wart/geraetedetail.html', id=id, form=form, geraet=geraet, fw_name=current_user.name)
 
 @app.route('/geraeteentfernen/<id>/<check>', methods=['GET', 'POST'])
 @login_required
@@ -180,23 +191,37 @@ def logbuch():
     if id is None:
         return redirect(url_for('wartgeraete'))
     id = id.id
+    
+    # Jahre für Choice Input festlegen
+    geraete_ff = Geraete.query.filter(Geraete.id_feuerwehr==current_user.id).with_entities(Geraete.id).all()
     year = date.today().year
+    year_min = Kurzpruefung.query.filter(Kurzpruefung.id_geraet == id).with_entities(Kurzpruefung.zeit).order_by(Kurzpruefung.zeit).first()
+    year_min = year_min[0].year
+    year_diff = year - year_min + 1
+    
     daten = Kurzpruefung.query.filter(Kurzpruefung.id_geraet==id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all()
+
+    typ_geraet = Geraete.query.filter(Geraete.id==id).first()
+    typ_geraet = typ_geraet.typ_geraet
 
     form = LogbuchAuswahl()
     geraete = Geraete.query.filter(Geraete.id_feuerwehr==current_user.id).all()
     choices_geraet = [(i.id, i.name_geraet) for i in geraete]
     form.geraet.choices = choices_geraet
-    choices_jahr = [(year-i, year-i) for i in range(20)]
+    choices_jahr = [(year-i, year-i) for i in range(year_diff)]
     form.year.choices = choices_jahr
 
     if form.validate_on_submit():
         id = form.geraet.data
         year = form.year.data
         daten = Kurzpruefung.query.filter(Kurzpruefung.id_geraet==id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all()
-        return render_template('/wart/logbuch.html', daten=daten, form=form, year=year)
 
-    return render_template('/wart/logbuch.html', daten=daten, form=form, year=year)
+        typ_geraet = Geraete.query.filter(Geraete.id==id).first()
+        typ_geraet = typ_geraet.typ_geraet
+
+        return render_template('/wart/logbuch.html', daten=daten, form=form, year=year, fw_name=current_user.name, typ_geraet=typ_geraet)
+
+    return render_template('/wart/logbuch.html', daten=daten, form=form, year=year, fw_name=current_user.name, typ_geraet=typ_geraet)
 
 
 @app.route('/pdflogbuch/<year>')
@@ -207,7 +232,7 @@ def pdflogbuch(year):
     geraete = Geraete.query.filter(Geraete.id_feuerwehr==current_user.id).all()
 
     for i in geraete:
-        i_daten = Kurzpruefung.query.join(Geraete, Kurzpruefung.id_geraet==Geraete.id).add_columns(Geraete.name_geraet).filter(Kurzpruefung.id_geraet==i.id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all()
+        i_daten = Kurzpruefung.query.join(Geraete, Kurzpruefung.id_geraet==Geraete.id).add_columns(Geraete.name_geraet, Geraete.typ_geraet).filter(Kurzpruefung.id_geraet==i.id, Kurzpruefung.zeit>='{}-01-01'.format(year), Kurzpruefung.zeit<='{}-12-31'.format(year)).all()
         if len(i_daten) > 0:
             daten.append(i_daten)
 
@@ -245,10 +270,57 @@ def qrdownload():
             
             qr_code = qrgenerator(url_for('geraete_login', id=geraet_selected.id), form.pin_geraet.data, form.geraet.data)
             qr_url = url_for('static', filename=qr_code)
-            return render_template('/wart/qrdownload.html', form=form, qr_url=qr_url)
+            return render_template('/wart/qrdownload.html', form=form, qr_url=qr_url, fw_name=current_user.name)
 
         else:
             flash('Pin stimmt nicht mit Gerät überein', 'error')
             return redirect(url_for('qrdownload'))
 
-    return render_template('/wart/qrdownload.html', form=form)
+    return render_template('/wart/qrdownload.html', form=form, fw_name=current_user.name)
+
+
+@app.route('/benutzer', methods=['GET', 'POST'])
+@login_required
+def benutzer():
+    form = EditFeuerwehr()
+    form_benutzer = EditBenutzer()
+    form_passwort = EditPasswort()
+    benutzer = Benutzer.query.filter(Benutzer.id == session['benutzer_id']).first()
+
+    if form.validate_on_submit():
+        ff_selected = Feuerwehren.query.filter(Feuerwehren.id==current_user.id).first()
+
+        ff_selected.name = form.name.data
+        ff_selected.strasse = form.strasse.data
+        ff_selected.plz = form.plz.data
+        ff_selected.ort = form.ort.data
+
+        db.session.add(ff_selected)
+        db.session.commit()
+
+        current_user.name = form.name.data
+        current_user.strasse = form.strasse.data
+        current_user.plz = form.plz.data
+        current_user.ort = form.ort.data
+
+        return redirect(url_for('benutzer', form=form, form_benutzer=form_benutzer, form_passwort=form_passwort, fw_name=current_user.name, benutzer=benutzer))
+
+    if form_benutzer.validate_on_submit():
+        benutzer.benutzer = form_benutzer.benutzer.data
+        benutzer.email = form_benutzer.email.data
+
+        db.session.add(benutzer)
+        db.session.commit()
+
+        return redirect(url_for('benutzer', form=form, form_benutzer=form_benutzer, form_passwort=form_passwort, fw_name=current_user.name, benutzer=benutzer)) 
+
+    if form_passwort.validate_on_submit():
+        benutzer = Benutzer.query.filter(Benutzer.id == session['benutzer_id']).first()
+        benutzer.set_password(form_passwort.passwort1.data)
+
+        db.session.add(benutzer)
+        db.session.commit()
+
+        return redirect(url_for('wartgeraete', form=form, form_benutzer=form_benutzer, form_passwort=form_passwort, fw_name=current_user.name, benutzer=benutzer)) 
+
+    return render_template('wart/benutzer.html', form=form, form_benutzer=form_benutzer, form_passwort=form_passwort, fw_name=current_user.name, benutzer=benutzer)

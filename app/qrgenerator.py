@@ -29,7 +29,9 @@ def qrgenerator(url, pin, id):
     img.paste(qr_img, (10, 0))
     img.paste(pin_img, (0, 290))
 
-    pfad = 'app/static/temp_files/qr_{}.jpg'.format(id)
+    dir = os.path.dirname(__file__)
+    pfad = os.path.join(dir, './static/temp_files/qr_{}.jpg'.format(id))
+    
     img.save(pfad)
 
     return '/temp_files/qr_{}.jpg'.format(id)
