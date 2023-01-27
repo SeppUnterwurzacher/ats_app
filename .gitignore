@@ -3,12 +3,8 @@ venv/
 app/__pycache__/
 __pycache__/
 migrations/app/__pycache__/
-app/__pycache__/routes.cpython-37.pyc
 .vscode/launch.json
-app/__pycache__/forms.cpython-37.pyc
-app/__pycache__/routes.cpython-37.pyc
-app/__pycache__/routes.cpython-37.pyc
 app.db
 app/static/temp_files
-app/__pycache__/routes.cpython-37.pyc
 app2.db
+
