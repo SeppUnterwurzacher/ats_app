@@ -7,4 +7,4 @@ migrations/app/__pycache__/
 app.db
 app/static/temp_files
 app2.db
-
+logs/
