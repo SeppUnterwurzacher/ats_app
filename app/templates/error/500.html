@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row bg-primary" style="padding-top: 0.3em;">
+        <div class="col-xs-1"></div>
+        <div class="col-xs-8" style="padding-left: 0em;">
+            <p style="margin-bottom: 0px; margin-top:0.3em">firesoft</p>
+            <h3 style="margin-top: 0px;">ATS-App</h3>
+        </div>
+        <div class="col-xs-2">
+            <img src="/static/img/wappen_feuerwehr.png" alt="Wappen Feuerwehr"  style="height: 50px; padding-top:0.5em;">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-1"></div>
+        <div class="col-xs-8" style="padding-left: 0em;">
+            <h1>Upps!</h1>
+            <p>Hier ist was falsch gelaufen, wenn das Problem weiterhin besteht bitte kontaktieren sie den Administrator</p>
+            <p><a href="{{ url_for('index') }}">Zurück</a></p>
+        </div>
+
+    </div>
+    
+</div>
+{% endblock%}
