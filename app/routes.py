@@ -237,7 +237,7 @@ def pdflogbuch(year):
             daten.append(i_daten)
 
     if len(daten[0]) > 0:
-        rendered = render_template('pdf/pdflogbuch.html', daten=daten)
+        rendered = render_template('pdf/pdflogbuch.html', daten=daten, year=year)
         
         options = {
             'orientation': 'Landscape'
