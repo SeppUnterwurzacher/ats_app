@@ -1,6 +1,6 @@
 from flask import render_template, url_for, redirect, make_response, flash, session, request
 from app import app, db
-from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl, GeraeteLogin, WartLogin, WartQR, EditFeuerwehr, EditBenutzer, EditPasswort
+from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl, GeraeteLogin, WartLogin, WartQR, EditFeuerwehr, EditBenutzer, EditPasswort, NeuerBenutzer
 from app.models import Feuerwehren, Geraete, Kurzpruefung, Benutzer
 from datetime import date
 import pdfkit
@@ -237,7 +237,7 @@ def pdflogbuch(year):
             daten.append(i_daten)
 
     if len(daten[0]) > 0:
-        rendered = render_template('pdf/pdflogbuch.html', daten=daten)
+        rendered = render_template('pdf/pdflogbuch.html', daten=daten, year=year)
         
         options = {
             'orientation': 'Landscape'
