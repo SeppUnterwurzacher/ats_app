@@ -63,6 +63,10 @@ class Benutzer(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+    
+    # eigenen get_id wird benötigt, da user_loader die ID der Feuerwehr benötigt
+    def get_id(self):
+        return self.id_feuerwehr
 
 @login.user_loader
 def load_geraet(id):
