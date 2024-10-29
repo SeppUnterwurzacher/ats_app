@@ -1,0 +1,55 @@
+{% extends 'base_wart.html' %}
+
+{% block input %}
+<div class="row">
+    <div class="col-md-4">
+        <h4 style="padding-bottom: 0em;">Neuen Benutzer anlegen</h4>
+        <hr style="margin-bottom:10px; margin-top: 0em; height:2px;border-width:0;color:gray;background-color:rgb(190, 190, 190)">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <form id="neuer-benutzer" class="form-group" action="" method="post">
+            {{ form.hidden_tag() }}
+            <p>{{ form.benutzer.label() }}: {{ form.benutzer(class="form-control") }}</p>
+            {% for error in form.benutzer.errors %}
+            <p style="color: red;">[{{ error }}]</p>
+            {% endfor %}
+            <p></p>
+            <p>{{ form.email.label() }}: {{ form.email(class="form-control") }}</p>
+            {% for error in form.email.errors %}
+            <p style="color: red;">[{{ error }}]</p>
+            {% endfor %}
+            <p>{{ form.passwort1.label() }}: {{ form.passwort1(class="form-control", placeholder="neues Passwort") }}</p>
+            <p>{{ form.passwort2(class="form-control", placeholder="wiederholen") }}</p>            
+            <p>{{ form.submit() }}</p>           
+        </form>
+    </div>
+</div>
+
+<script>
+    <!-- blendet Tab-Leiste aus -->
+    document.getElementById('tabs').style.display='none';
+
+    document.getElementById("passwort1").addEventListener("keyup", pw_vergleich)
+    document.getElementById("passwort2").addEventListener("keyup", pw_vergleich)
+
+
+    function pw_vergleich() {
+        var passwort1 = document.getElementById("passwort1").value;
+        var passwort2 = document.getElementById("passwort2").value;
+
+        if (passwort1 != passwort2){
+            document.getElementById('submit').disabled = true;
+            document.getElementById('submit').value = 'Eingabe stimmt nicht überein';
+            document.getElementById('submit').style.backgroundColor = 'lightgrey';
+
+        } else {
+            document.getElementById('submit').disabled = false;
+            document.getElementById('submit').value = 'speichern';
+            document.getElementById('submit').style.backgroundColor = '#5cb85c';
+        }
+    }
+</script>
+{% endblock %}
