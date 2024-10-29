@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField, SelectField, PasswordField, EmailField, TextAreaField
 from wtforms.validators import DataRequired, NumberRange, Length, Optional, Email, EqualTo, ValidationError
 from datetime import date
-from app.models import Geraete
+from app.models import Geraete, Benutzer
 from flask_login import current_user
 
 
@@ -62,3 +62,20 @@ class EditPasswort(FlaskForm):
     passwort1 = PasswordField('Passwort', validators=[DataRequired(), EqualTo('passwort2', message='Eingabe stimmt nicht')])
     passwort2 = PasswordField('wiederholen', validators=[DataRequired()])
     submit_pw = SubmitField('speichern')
+
+class BenutzerAnlegen(FlaskForm):
+    benutzer = StringField('Name', validators=[DataRequired()])
+    email = EmailField('E-Mail', validators=[DataRequired(), Email()])
+    passwort1 = PasswordField('Passwort', validators=[DataRequired(), EqualTo('passwort2', message='Eingabe stimmt nicht')])
+    passwort2 = PasswordField('wiederholen', validators=[DataRequired()])
+    submit = SubmitField('speichern')
+
+    def validate_benutzer(self, benutzer):
+        benutzer = Benutzer.query.filter_by(benutzer=benutzer.data).first()
+        if benutzer is not None:
+            raise ValidationError('Bitte einen anderen Benutzernamen verwenden')
+        
+    def validate_email(self, email):
+        benutzer = Benutzer.query.filter_by(email=email.data).first()
+        if benutzer is not None:
+            raise ValidationError('Bitte einen anderen E-Mail Adresse verwenden')

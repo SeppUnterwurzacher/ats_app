@@ -13,6 +13,7 @@
         <ul id="data-ff" style="list-style-type:none; padding-inline-start: 0px">
             <li><b>Name:</b> {{current_user.name}} </p></li>
             <li><b>Adresse:</b> {{current_user.strasse}}, {{current_user.plz}} {{current_user.ort}}</p></li>
+            <li><a id="link_neuer_benutzer" href="{{ url_for('benutzeranlegen') }}">Neuen Benutzer anlegen</a></li>
         </ul>
 
         <!-- form zum Bearbeiten -->
@@ -90,6 +91,11 @@
     function editpasswort() {
         document.getElementById("link-passwort").style.display = "none"
         document.getElementById("edit-passwort").style.display = "block"
+    }
+
+    function neuerbenutzer() {
+        document.getElementById("link_neuer_benutzer").style.display = "none"
+        document.getElementById("neuer-benutzer").style.display = "block"
     }
 
     document.getElementById("passwort1").addEventListener("keyup", pw_vergleich)
