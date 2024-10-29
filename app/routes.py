@@ -138,7 +138,10 @@ def wartgeraete():
 def geraetedetail(id):
     form = WartNeuGeraet()
     geraet = Geraete.query.filter(Geraete.id==id).first()
-  
+
+    # Geräte ID wird für Validation der Geräte Bezeichnung benötigt
+    if geraet is not None:
+        session['geraet_id'] = geraet.id
 
     if form.validate_on_submit():
         if id == '0':

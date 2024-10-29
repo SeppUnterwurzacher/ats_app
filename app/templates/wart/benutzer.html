@@ -40,7 +40,13 @@
         <!-- Liste mit Daten zur Feuerwehr -->
         <ul id="data-benutzer" style="list-style-type:none; padding-inline-start: 0px">
             <li><b>Name:</b> {{benutzer.benutzer}} </p></li>
+            {% for error in form_benutzer.benutzer.errors %}
+            <p style="color: red;">{{ error }}</p>
+            {% endfor %}
             <li><b>E-Mail:</b> {{benutzer.email}}</p></li>
+            {% for error in form_benutzer.email.errors %}
+            <p style="color: red;">{{ error }}</p>
+            {% endfor %}
         </ul>
         <a id="link-passwort" onclick="editpasswort()">Passwort ändern</a>
 
@@ -48,6 +54,7 @@
         <form id="edit-benutzer" class="form-group" style="display: none;" action="" method="post">
             {{ form_benutzer.hidden_tag() }}
             <p>{{ form_benutzer.benutzer.label() }}: {{ form_benutzer.benutzer(class="form-control", value=benutzer.benutzer) }}</p>
+            
             <p>{{ form_benutzer.email.label() }}: {{ form_benutzer.email(class="form-control", value=benutzer.email) }}</p>
             <p>{{ form_benutzer.submit_bn() }}</p>           
         </form>
