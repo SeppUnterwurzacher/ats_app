@@ -1,6 +1,6 @@
 from flask import render_template, url_for, redirect, make_response, flash, session, request
 from app import app, db
-from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl, GeraeteLogin, WartLogin, WartQR, EditFeuerwehr, EditBenutzer, EditPasswort
+from app.forms import KPEinsatzUebung, WartNeuGeraet, LogbuchAuswahl, GeraeteLogin, WartLogin, WartQR, EditFeuerwehr, EditBenutzer, EditPasswort, BenutzerAnlegen
 from app.models import Feuerwehren, Geraete, Kurzpruefung, Benutzer
 from datetime import date
 import pdfkit
@@ -138,7 +138,10 @@ def wartgeraete():
 def geraetedetail(id):
     form = WartNeuGeraet()
     geraet = Geraete.query.filter(Geraete.id==id).first()
-  
+
+    # Geräte ID wird für Validation der Geräte Bezeichnung benötigt
+    if geraet is not None:
+        session['geraet_id'] = geraet.id
 
     if form.validate_on_submit():
         if id == '0':
@@ -324,3 +327,28 @@ def benutzer():
         return redirect(url_for('wartgeraete', form=form, form_benutzer=form_benutzer, form_passwort=form_passwort, fw_name=current_user.name, benutzer=benutzer)) 
 
     return render_template('wart/benutzer.html', form=form, form_benutzer=form_benutzer, form_passwort=form_passwort, fw_name=current_user.name, benutzer=benutzer)
+
+
+@app.route('/benutzeranlegen', methods=['GET', 'POST'])
+@login_required
+def benutzeranlegen():
+    form = BenutzerAnlegen()
+
+    if form.validate_on_submit():
+        ff_selected = Feuerwehren.query.filter(Feuerwehren.id==current_user.id).first()
+
+        neuer_benutzer = Benutzer(benutzer = form.benutzer.data,
+                                  email = form.email.data,
+                                  id_feuerwehr = ff_selected.id
+                                  )
+        
+        neuer_benutzer.set_password(form.passwort1.data)
+
+        db.session.add(neuer_benutzer)
+        db.session.commit()
+
+        flash("Neuen Benutzer erfolgreich angelegt!", "success")
+
+        return redirect(url_for('wartgeraete'))
+
+    return render_template('wart/benutzeranlegen.html', form=form, fw_name=current_user.name)

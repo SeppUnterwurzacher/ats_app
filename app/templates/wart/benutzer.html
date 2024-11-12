@@ -13,6 +13,7 @@
         <ul id="data-ff" style="list-style-type:none; padding-inline-start: 0px">
             <li><b>Name:</b> {{current_user.name}} </p></li>
             <li><b>Adresse:</b> {{current_user.strasse}}, {{current_user.plz}} {{current_user.ort}}</p></li>
+            <li><a id="link_neuer_benutzer" href="{{ url_for('benutzeranlegen') }}">Neuen Benutzer anlegen</a></li>
         </ul>
 
         <!-- form zum Bearbeiten -->
@@ -39,7 +40,13 @@
         <!-- Liste mit Daten zur Feuerwehr -->
         <ul id="data-benutzer" style="list-style-type:none; padding-inline-start: 0px">
             <li><b>Name:</b> {{benutzer.benutzer}} </p></li>
+            {% for error in form_benutzer.benutzer.errors %}
+            <p style="color: red;">{{ error }}</p>
+            {% endfor %}
             <li><b>E-Mail:</b> {{benutzer.email}}</p></li>
+            {% for error in form_benutzer.email.errors %}
+            <p style="color: red;">{{ error }}</p>
+            {% endfor %}
         </ul>
         <a id="link-passwort" onclick="editpasswort()">Passwort ändern</a>
 
@@ -47,6 +54,7 @@
         <form id="edit-benutzer" class="form-group" style="display: none;" action="" method="post">
             {{ form_benutzer.hidden_tag() }}
             <p>{{ form_benutzer.benutzer.label() }}: {{ form_benutzer.benutzer(class="form-control", value=benutzer.benutzer) }}</p>
+            
             <p>{{ form_benutzer.email.label() }}: {{ form_benutzer.email(class="form-control", value=benutzer.email) }}</p>
             <p>{{ form_benutzer.submit_bn() }}</p>           
         </form>
@@ -90,6 +98,11 @@
     function editpasswort() {
         document.getElementById("link-passwort").style.display = "none"
         document.getElementById("edit-passwort").style.display = "block"
+    }
+
+    function neuerbenutzer() {
+        document.getElementById("link_neuer_benutzer").style.display = "none"
+        document.getElementById("neuer-benutzer").style.display = "block"
     }
 
     document.getElementById("passwort1").addEventListener("keyup", pw_vergleich)
